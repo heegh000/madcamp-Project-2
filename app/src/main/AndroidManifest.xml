@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.fivepiratesgame">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,8 +16,30 @@
         android:theme="@style/Theme.FivePiratesGame"
         tools:targetApi="31">
         <activity
+            android:name=".login.LoginLocal"
+            android:exported="false" />
+        <activity
+            android:name=".login.Register"
+            android:exported="false" />
+        <activity
+            android:name=".Ranking"
+            android:exported="false" />
+        <activity
+            android:name=".History"
+            android:exported="false" />
+        <activity
+            android:name=".CustomizeCharacter"
+            android:exported="false" />
+        <activity
+            android:name=".login.LoginIntro"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="false" />
+        <activity
+            android:name=".IntroActivity"
+            android:exported="true"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
