@@ -1,4 +1,4 @@
-package com.example.fivepiratesgame.history;
+package com.example.fivepiratesgame.History;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -33,9 +33,9 @@ public class HistoryData {
 
     @Override
     public String toString() {
-        return "{" +
-                "date: " + time +
-                ", result: " + result +
-                "}";
+        return "HistoryData{" +
+                "time='" + time + '\'' +
+                ", result='" + result + '\'' +
+                '}';
     }
 }

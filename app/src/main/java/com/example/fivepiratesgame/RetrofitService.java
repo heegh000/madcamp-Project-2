@@ -1,17 +1,15 @@
 package com.example.fivepiratesgame;
 
-import com.example.fivepiratesgame.history.HistoryData;
+import com.example.fivepiratesgame.History.HistoryData;
+import com.example.fivepiratesgame.Ranking.RankingData;
 
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.PATCH;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface RetrofitService {
@@ -20,7 +18,7 @@ public interface RetrofitService {
     @POST("signup")
     Call<String> postUD(@Field("user_id") String user_id,
                           @Field("user_pw") String user_pw,
-                          @Field("user_name") String user_name);
+                          @Field("nickname") String nickname);
 
     @GET("signin")
     Call<String> getSignIn(@Query("user_id") String user_id,
@@ -29,4 +27,6 @@ public interface RetrofitService {
     @GET("history")
     Call<List<HistoryData>> getHistory(@Query("user_id") String user_id);
 
+    @GET("ranking")
+    Call<List<RankingData>> getRanking();
 }

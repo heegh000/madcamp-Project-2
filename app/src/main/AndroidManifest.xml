@@ -23,10 +23,10 @@
             android:name=".login.Register"
             android:exported="false" />
         <activity
-            android:name=".Ranking"
+            android:name=".Ranking.Ranking"
             android:exported="false" />
         <activity
-            android:name=".history.History"
+            android:name=".History.History"
             android:exported="false" />
         <activity
             android:name=".CustomizeCharacter"

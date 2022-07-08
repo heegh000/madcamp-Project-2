@@ -1,4 +1,4 @@
-package com.example.fivepiratesgame.history;
+package com.example.fivepiratesgame.History;
 
 import android.content.Context;
 import android.view.LayoutInflater;

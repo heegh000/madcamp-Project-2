@@ -7,9 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.fivepiratesgame.MainActivity;
 import com.example.fivepiratesgame.R;
-import com.example.fivepiratesgame.history.History;
 
 public class LoginIntro extends AppCompatActivity implements View.OnClickListener{
 
