@@ -1,5 +1,7 @@
 package com.example.fivepiratesgame;
 
+import com.example.fivepiratesgame.history.HistoryData;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -28,5 +30,8 @@ public interface RetrofitService {
     @POST("signin")
     Call<String> postIN(@Field("user_id") String user_id,
                         @Field("user_pw") String user_pw);
+
+    @GET("history")
+    Call<List<HistoryData>> getHistory(@Query("user_id") String user_id);
 
 }
