@@ -140,7 +140,7 @@ public class LoginLocal extends AppCompatActivity {
                                 Log.d("POST success", result);
                                 loginViewModel.setLoginResult(new LoginResult(new LoggedInUserView(userID)));
 
-                                //DB에서 ID로 username, avatarID 받아오기!!!!
+                                //DB에서 ID로 username, avatarID, gold, ranking 받아오기!!!!
                                 String userName = "John Doe";
                                 int avatarID = 2;
 

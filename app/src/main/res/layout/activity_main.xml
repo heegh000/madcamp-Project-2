@@ -35,20 +35,29 @@
     <ImageView
         android:id="@+id/avatar"
         android:layout_width="wrap_content"
-        android:layout_height="300dp"
+        android:layout_height="240dp"
         android:src="@drawable/pikachu"
         app:layout_constraintBottom_toTopOf="@id/charInfo"
-        app:layout_constraintTop_toBottomOf="@+id/tvName"
+        app:layout_constraintTop_toBottomOf="@+id/tvID"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="60dp"
+        />
+
+    <ImageView
+        android:layout_width="240dp"
+        android:layout_height="200dp"
+        android:src="@drawable/pirate_hat"
+        app:layout_constraintTop_toBottomOf="@+id/tvID"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="-20dp"
         />
 
     <LinearLayout
         android:id="@+id/charInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:background="@drawable/rounded_light1"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/avatar">
@@ -92,7 +101,7 @@
                 android:layout_weight="0.5"
                 android:fontFamily="@font/xbones"
                 android:gravity="center"
-                android:text="Cash"
+                android:text="Gold"
                 android:textSize="30dp" />
 
             <TextView
