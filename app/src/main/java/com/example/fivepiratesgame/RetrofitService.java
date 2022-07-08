@@ -20,8 +20,13 @@ public interface RetrofitService {
 
     @FormUrlEncoded
     @POST("signup")
-    Call<String> postUD(@Field("user_name") String user_name,
-                          @Field("user_id") String user_id,
-                          @Field("user_pw") String user_pw);
+    Call<String> postUD(@Field("user_id") String user_id,
+                          @Field("user_pw") String user_pw,
+                          @Field("user_name") String user_name);
+
+    @FormUrlEncoded
+    @POST("signin")
+    Call<String> postIN(@Field("user_id") String user_id,
+                        @Field("user_pw") String user_pw);
 
 }
