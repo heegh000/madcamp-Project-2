@@ -23,7 +23,7 @@ public class LoginIntro extends AppCompatActivity implements View.OnClickListene
         newaccount = findViewById(R.id.newaccount);
 
 //        googlelogin.setOnClickListener(this);
-        login_local.setOnClickListener(this);
+//        login_local.setOnClickListener(this);
         newaccount.setOnClickListener(this);
     }
 
