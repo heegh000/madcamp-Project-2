@@ -25,6 +25,15 @@
         <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/content_history.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/fragment_first.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/fragment_second.xml" value="0.36614583333333334" />
+<<<<<<< HEAD
+=======
+        <entry key="..\:/Users/hgh/Desktop/fivePiratesGame/app/src/main/res/layout/activity_customize_character.xml" value="0.1875" />
+        <entry key="..\:/Users/hgh/Desktop/fivePiratesGame/app/src/main/res/layout/activity_history.xml" value="0.1875" />
+        <entry key="..\:/Users/hgh/Desktop/fivePiratesGame/app/src/main/res/layout/activity_main.xml" value="0.1875" />
+        <entry key="..\:/Users/hgh/Desktop/fivePiratesGame/app/src/main/res/layout/activity_ranking.xml" value="0.1" />
+        <entry key="..\:/Users/hgh/Desktop/fivePiratesGame/app/src/main/res/layout/item_history.xml" value="0.1875" />
+        <entry key="..\:/Users/hgh/Desktop/fivePiratesGame/app/src/main/res/layout/item_ranking.xml" value="0.1" />
+>>>>>>> e9715dd92345a6235b5ddd2aeb7fc2191ee6fc3e
       </map>
     </option>
   </component>

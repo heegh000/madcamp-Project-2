@@ -1,18 +1,16 @@
-package com.example.fivepiratesgame.history;
+package com.example.fivepiratesgame.Ranking;
+
+import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.util.Log;
-
 import com.example.fivepiratesgame.R;
 import com.example.fivepiratesgame.RetrofitService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +22,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-public class History extends AppCompatActivity {
+public class Ranking extends AppCompatActivity {
 
-    private ArrayList<HistoryData> historyArrayList;
+    private ArrayList<RankingData> rankArrayList;
 
-    private HistoryAdapter historyAdapter;
-    private RecyclerView rvHistory;
+    private RankingAdapter rankAdapter;
+    private RecyclerView rvRanking;
 
     String BASE_URL = "http://172.10.5.52:443/";
     Retrofit retrofit;
@@ -38,48 +36,49 @@ public class History extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
+        setContentView(R.layout.activity_ranking);
 
-        initHistory();
+        initRanking();
 
-
-        service.getHistory("aa").enqueue(new Callback<List<HistoryData>>() {
+        service.getRanking().enqueue((new Callback<List<RankingData>>() {
             @Override
-            public void onResponse(Call<List<HistoryData>> call, Response<List<HistoryData>> response) {
+            public void onResponse(Call<List<RankingData>> call, Response<List<RankingData>> response) {
                 if(response.isSuccessful()) {
                     try {
-                        String time, result;
+                        String nickname, gold;
 
                         for(int i = 0; i < response.body().size(); i++) {
-                            time = response.body().get(i).getTime();
-                            result = response.body().get(i).getResult();
-                            historyArrayList.add(new HistoryData(time, result));
+                            nickname = response.body().get(i).getNickname();
+                            gold = response.body().get(i).getGold();
+                            rankArrayList.add(new RankingData(nickname, gold));
                         }
-                        historyAdapter.notifyDataSetChanged();
+
+                        rankAdapter.notifyDataSetChanged();
+
                     }
-                    catch (Exception e) {
+                    catch(Exception e) {
                         e.printStackTrace();
                     }
                 }
                 else {
-                    Log.d("History GET Fail", "error = " + String.valueOf(response.code()));
+                    Log.d("Ranking GET Fail", "error = " + String.valueOf(response.code()));
                 }
             }
 
             @Override
-            public void onFailure(Call<List<HistoryData>> call, Throwable t) {
-                Log.d ("History GET on fail", t.getMessage());
+            public void onFailure(Call<List<RankingData>> call, Throwable t) {
+                Log.d ("Ranking GET on fail", t.getMessage());
             }
-        });
+        }));
     }
 
-    private void initHistory() {
-        historyArrayList = new ArrayList<>();
-        historyAdapter = new HistoryAdapter(this, historyArrayList);
+    private void initRanking() {
+        rankArrayList = new ArrayList<>();
+        rankAdapter = new RankingAdapter(this, rankArrayList);
 
-        rvHistory = (RecyclerView) findViewById(R.id.rvHistroy);
-        rvHistory.setLayoutManager(new LinearLayoutManager(this));
-        rvHistory.setAdapter(historyAdapter);
+        rvRanking = (RecyclerView) findViewById(R.id.rvRanking);
+        rvRanking.setLayoutManager(new LinearLayoutManager(this));
+        rvRanking.setAdapter(rankAdapter);
 
         Gson gson = new GsonBuilder().setLenient().create();
 
