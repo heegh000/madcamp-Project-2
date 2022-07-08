@@ -64,14 +64,14 @@ public class LoginLocal extends AppCompatActivity {
                 String userPW = et_pw.getText().toString();
 
                 Log.d("click", "login");
-                Call<String> call_post = service.postIN(userID, userPW);
-                call_post.enqueue(new Callback<String>() {
+                Call<String> signIn = service.getSignIn(userID, userPW);
+                signIn.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {// 로그인 요청을 한 후 결과값 받음
                         if(response.isSuccessful()){ // 서버통신성공했음?
                             try {
                                 String result = response.body().toString();
-                                Log.d("POST success", result);
+                                Log.d("Sign In success", result);
                                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG);
                             }
                             catch (Exception e){
@@ -79,13 +79,13 @@ public class LoginLocal extends AppCompatActivity {
                             }
                         }
                         else {
-                            Log.d("POST fail", "error = " + String.valueOf(response.code()) + response.errorBody());
+                            Log.d("Sign In fail", "error = " + String.valueOf(response.code()) + response.errorBody());
                         }
                     }
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-                        Log.d ("POST on fail", "Fail " + t.getMessage());
+                        Log.d ("Sign In on fail", t.getMessage());
 
                     }
                 });

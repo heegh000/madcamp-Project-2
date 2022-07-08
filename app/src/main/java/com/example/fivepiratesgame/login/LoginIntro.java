@@ -37,7 +37,7 @@ public class LoginIntro extends AppCompatActivity implements View.OnClickListene
 //            startActivity(new Intent(getApplicationContext(),
 //                    LoginLocal.class));
             startActivity(new Intent(getApplicationContext(),
-                    History.class));
+                    LoginLocal.class));
         }
         else if (id==R.id.newaccount){
             startActivity(new Intent(getApplicationContext(),

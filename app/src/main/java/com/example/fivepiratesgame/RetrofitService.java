@@ -16,20 +16,15 @@ import retrofit2.http.Query;
 
 public interface RetrofitService {
 
-    @GET("{path}")
-    Call<List<UserData>> getUD(@Path("path") String path);
-
-
     @FormUrlEncoded
     @POST("signup")
     Call<String> postUD(@Field("user_id") String user_id,
                           @Field("user_pw") String user_pw,
                           @Field("user_name") String user_name);
 
-    @FormUrlEncoded
-    @POST("signin")
-    Call<String> postIN(@Field("user_id") String user_id,
-                        @Field("user_pw") String user_pw);
+    @GET("signin")
+    Call<String> getSignIn(@Query("user_id") String user_id,
+                        @Query("user_pw") String user_pw);
 
     @GET("history")
     Call<List<HistoryData>> getHistory(@Query("user_id") String user_id);
