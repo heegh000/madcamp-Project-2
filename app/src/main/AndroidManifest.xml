@@ -26,7 +26,7 @@
             android:name=".Ranking"
             android:exported="false" />
         <activity
-            android:name=".History"
+            android:name=".history.History"
             android:exported="false" />
         <activity
             android:name=".CustomizeCharacter"

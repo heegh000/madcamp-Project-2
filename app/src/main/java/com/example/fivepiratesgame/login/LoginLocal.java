@@ -54,9 +54,7 @@ public class LoginLocal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_local);
 
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
+        Gson gson = new GsonBuilder().setLenient().create();
 
         retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
                 .addConverterFactory(ScalarsConverterFactory.create())
@@ -132,8 +130,8 @@ public class LoginLocal extends AppCompatActivity {
                 String userPW = et_pw.getText().toString();
 
                 Log.d("click", "login");
-                Call<String> call_post = service.postIN(userID, userPW);
-                call_post.enqueue(new Callback<String>() {
+                Call<String> signIn = service.getSignIn(userID, userPW);
+                signIn.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {// 로그인 요청을 한 후 결과값 받음
                         if(response.isSuccessful()){ // 서버통신성공했음?
@@ -144,6 +142,8 @@ public class LoginLocal extends AppCompatActivity {
 
                                 startActivity(new Intent(getApplicationContext(),
                                         MainActivity.class).putExtra("userID", userID));
+                                Log.d("Sign In success", result);
+
                             }
                             catch (Exception e){
                                 e.printStackTrace();
@@ -151,14 +151,14 @@ public class LoginLocal extends AppCompatActivity {
                         }
                         else {
                             loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
-                            Log.d("POST fail", "error = " + String.valueOf(response.code()) + response.errorBody());
+                            Log.d("Sign In fail", "error = " + String.valueOf(response.code()) + response.errorBody());
                         }
                     }
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
                         loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
-                        Log.d ("POST on fail", "Fail " + t.getMessage());
+                        Log.d ("Sign In on fail", t.getMessage());
 
                     }
                 });

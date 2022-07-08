@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.fivepiratesgame.MainActivity;
 import com.example.fivepiratesgame.R;
+import com.example.fivepiratesgame.history.History;
 
 public class LoginIntro extends AppCompatActivity implements View.OnClickListener{
 
@@ -32,9 +34,10 @@ public class LoginIntro extends AppCompatActivity implements View.OnClickListene
         int id = view.getId();
 
         if (id==R.id.login) {
+//            startActivity(new Intent(getApplicationContext(),
+//                    LoginLocal.class));
             startActivity(new Intent(getApplicationContext(),
                     LoginLocal.class));
-
         }
         else if (id==R.id.newaccount){
             startActivity(new Intent(getApplicationContext(),

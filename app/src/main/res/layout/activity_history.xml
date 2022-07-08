@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/deep3"
-    tools:context=".History">
+    tools:context=".history.History">
 
     <LinearLayout
         android:id="@+id/title"
@@ -42,7 +42,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/contact_rv"
+        android:id="@+id/rvHistroy"
         android:fontFamily="@font/xbones"
         android:textColor="#fff"
         android:layout_marginTop="20dp"
