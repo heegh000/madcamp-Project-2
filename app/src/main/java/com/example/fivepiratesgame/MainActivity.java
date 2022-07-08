@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.fivepiratesgame.Ranking.Ranking;
+
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
         put(5, R.drawable.pikachu);
         put(6, R.drawable.snorlex);
         put(7, R.drawable.squirtle);
-
     }};
 
     private TextView tvName, tvID, history, ranking;
@@ -39,7 +40,10 @@ public class MainActivity extends AppCompatActivity {
         tvID = findViewById(R.id.tvID);
         avatar = findViewById(R.id.avatar);
         playgame = findViewById(R.id.playgame);
-        // 아바타, 이름, 등등 정보도 DB에서 가져오기
+        history = findViewById(R.id.history);
+        ranking = findViewById(R.id.ranking);
+
+        // 아바타, 이름, 골드 등등 정보도 DB에서 가져오기
 
         Intent intent = getIntent();
         String userID = intent.getStringExtra("userID");
@@ -57,6 +61,20 @@ public class MainActivity extends AppCompatActivity {
                         .putExtra("userID", userID)
                         .putExtra("userName", userName)
                         .putExtra("avatarID", avatarID));
+            }
+        });
+
+        history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), com.example.fivepiratesgame.History.History.class));
+            }
+        });
+
+        ranking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), Ranking.class));
             }
         });
 

@@ -53,6 +53,7 @@ public class CustomizeCharacter extends AppCompatActivity {
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // DB로 ID, name, avatar 보내기
                 startActivity(new Intent(getApplicationContext(), MainActivity.class)
                         .putExtra("userID", userID)
                         .putExtra("userName", userName)
