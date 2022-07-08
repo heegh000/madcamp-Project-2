@@ -17,7 +17,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".GameInit"
+            android:name=".game.GameActivity"
             android:exported="false" />
         <activity
             android:name=".login.LoginLocal"
@@ -26,10 +26,10 @@
             android:name=".login.Register"
             android:exported="false" />
         <activity
-            android:name=".Ranking.Ranking"
+            android:name=".ranking.Ranking"
             android:exported="false" />
         <activity
-            android:name=".History.History"
+            android:name=".history.History"
             android:exported="false" />
         <activity
             android:name=".CustomizeCharacter"

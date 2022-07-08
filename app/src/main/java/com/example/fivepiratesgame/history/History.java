@@ -1,4 +1,4 @@
-package com.example.fivepiratesgame.History;
+package com.example.fivepiratesgame.history;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;

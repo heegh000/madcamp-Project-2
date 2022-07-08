@@ -1,14 +1,16 @@
-package com.example.fivepiratesgame;
+package com.example.fivepiratesgame.game;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class GameInit extends AppCompatActivity {
+import com.example.fivepiratesgame.R;
+
+public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_init);
+        setContentView(R.layout.activity_game);
     }
 }
