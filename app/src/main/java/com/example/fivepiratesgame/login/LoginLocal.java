@@ -1,19 +1,27 @@
 package com.example.fivepiratesgame.login;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.CharacterPickerDialog;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-//import com.android.volley.RequestQueue;
-//import com.android.volley.Response;
-//import com.android.volley.toolbox.Volley;
 import com.example.fivepiratesgame.MainActivity;
 import com.example.fivepiratesgame.R;
 import com.example.fivepiratesgame.RetrofitService;
@@ -37,7 +45,9 @@ public class LoginLocal extends AppCompatActivity {
     RetrofitService service;
 
     private EditText et_id, et_pw;
-    private Button loginBtn;
+    private AppCompatButton loginBtn;
+
+    private LoginViewModel loginViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +62,70 @@ public class LoginLocal extends AppCompatActivity {
 
         service = retrofit.create(RetrofitService.class);
 
+        loginViewModel = new LoginViewModel();
+
         et_id = findViewById(R.id.et_id);
         et_pw = findViewById(R.id.et_pw);
         loginBtn = findViewById(R.id.loginBtn);
 
+        loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
+            @Override
+            public void onChanged(@Nullable LoginFormState loginFormState) {
+                if (loginFormState == null) {
+                    return;
+                }
+                loginBtn.setEnabled(loginFormState.isDataValid());
+                if (loginFormState.getUsernameError() != null) {
+                    et_id.setError(getString(loginFormState.getUsernameError()));
+                }
+                if (loginFormState.getPasswordError() != null) {
+                    et_pw.setError(getString(loginFormState.getPasswordError()));
+                }
+            }
+        });
+
+        loginViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
+            @Override
+            public void onChanged(@Nullable LoginResult loginResult) {
+                if (loginResult == null) {
+                    return;
+                }
+                if (loginResult.getError() != null) {
+                    showLoginFailed(loginResult.getError());
+                }
+                if (loginResult.getSuccess() != null) {
+                    updateUiWithUser(loginResult.getSuccess());
+                }
+                setResult(Activity.RESULT_OK);
+
+                //Complete and destroy login activity once successful
+                finish();
+            }
+        });
+
+        TextWatcher afterTextChangedListener = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // ignore
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // ignore
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                loginViewModel.loginDataChanged(et_id.getText().toString(),
+                        et_pw.getText().toString());
+            }
+        };
+        et_id.addTextChangedListener(afterTextChangedListener);
+        et_pw.addTextChangedListener(afterTextChangedListener);
+
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                // EditText에 현재 입력되어 있는 값 가져오기
+            public void onClick(View v) {
                 String userID = et_id.getText().toString();
                 String userPW = et_pw.getText().toString();
 
@@ -71,27 +137,41 @@ public class LoginLocal extends AppCompatActivity {
                         if(response.isSuccessful()){ // 서버통신성공했음?
                             try {
                                 String result = response.body().toString();
+                                Log.d("POST success", result);
+                                loginViewModel.setLoginResult(new LoginResult(new LoggedInUserView(userID)));
+
+                                startActivity(new Intent(getApplicationContext(),
+                                        MainActivity.class).putExtra("userID", userID));
                                 Log.d("Sign In success", result);
-                                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG);
+
                             }
                             catch (Exception e){
                                 e.printStackTrace();
                             }
                         }
                         else {
+                            loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
                             Log.d("Sign In fail", "error = " + String.valueOf(response.code()) + response.errorBody());
                         }
                     }
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
+                        loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
                         Log.d ("Sign In on fail", t.getMessage());
 
                     }
                 });
-
-
             }
         });
     }
+    private void updateUiWithUser(LoggedInUserView model) {
+        String welcome = getString(R.string.welcome) + model.getDisplayName();
+        // TODO : initiate successful logged in experience
+        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+    }
+    private void showLoginFailed(@StringRes Integer errorString) {
+        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+    }
+
 }
