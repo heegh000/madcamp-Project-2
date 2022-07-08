@@ -1,4 +1,4 @@
-package com.example.fivepiratesgame.Ranking;
+package com.example.fivepiratesgame.ranking;
 
 import com.google.gson.annotations.SerializedName;
 
