@@ -109,37 +109,40 @@ public class Register extends AppCompatActivity {
                 String userName = et_name.getText().toString();
 
                 Log.d("click", "register");
-                Call<String> call_post = service.postUD(userID, userPW, userName);
-                call_post.enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {// 회원가입 요청을 한 후 결과값 받음
-                        if(response.isSuccessful()){ // 서버통신성공했음?
-                            try {
-                                String result = response.body().toString();
-                                Log.d("POST success", result);
-                                loginViewModel.setLoginResult(new LoginResult(new LoggedInUserView(userID)));
+                startActivity(new Intent(getApplicationContext(), CustomizeCharacter.class)
+                        .putExtra("userID", userID).putExtra("userName", userName));
 
-                                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG);
-                                startActivity(new Intent(getApplicationContext(),
-                                        MainActivity.class).putExtra("userID", userID));
-                            }
-                            catch (Exception e){
-                                e.printStackTrace();
-                            }
-                        }
-                        else {
-                            loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
-                            Log.d("POST fail", "error = " + String.valueOf(response.code()) + response.errorBody());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
-                        Log.d ("POST on fail", "Fail " + t.getMessage());
-
-                    }
-                });
+//                Call<String> call_post = service.postUD(userID, userPW, userName);
+//                call_post.enqueue(new Callback<String>() {
+//                    @Override
+//                    public void onResponse(Call<String> call, Response<String> response) {// 회원가입 요청을 한 후 결과값 받음
+//                        if(response.isSuccessful()){ // 서버통신성공했음?
+//                            try {
+//                                String result = response.body().toString();
+//                                Log.d("POST success", result);
+//                                loginViewModel.setLoginResult(new LoginResult(new LoggedInUserView(userID)));
+//
+//                                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG);
+//                                startActivity(new Intent(getApplicationContext(),
+//                                        MainActivity.class).putExtra("userID", userID));
+//                            }
+//                            catch (Exception e){
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                        else {
+//                            loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
+//                            Log.d("POST fail", "error = " + String.valueOf(response.code()) + response.errorBody());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<String> call, Throwable t) {
+//                        loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
+//                        Log.d ("POST on fail", "Fail " + t.getMessage());
+//
+//                    }
+//                });
 
             }
         });
