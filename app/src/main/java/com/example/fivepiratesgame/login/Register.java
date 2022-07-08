@@ -10,8 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.example.fivepiratesgame.CustomizeCharacter;
 import com.example.fivepiratesgame.MainActivity;
 import com.example.fivepiratesgame.R;
@@ -63,16 +61,16 @@ public class Register extends AppCompatActivity {
                 String userID = et_id.getText().toString();
                 String userPW = et_pw.getText().toString();
                 // ID PW 제한 조건 추가하기
-                Log.d("click", "register");
 
-                Call<String> call_post = service.postUD("username", userID, userPW);
+                Log.d("click", "register");
+                Call<String> call_post = service.postUD(userID, userPW, userPW);
                 call_post.enqueue(new Callback<String>() {
                     @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if(response.isSuccessful()){
+                    public void onResponse(Call<String> call, Response<String> response) {// 회원가입 요청을 한 후 결과값 받음
+                        if(response.isSuccessful()){ // 서버통신성공했음?
                             try {
                                 String result = response.body().toString();
-                                Log.d("POST", result);
+                                Log.d("POST success", result);
                                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG);
                             }
                             catch (Exception e){
@@ -80,50 +78,16 @@ public class Register extends AppCompatActivity {
                             }
                         }
                         else {
-                            Log.d("POST", "error = " + String.valueOf(response.code()) + response.errorBody());
+                            Log.d("POST fail", "error = " + String.valueOf(response.code()) + response.errorBody());
                         }
                     }
 
-
-
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-                    Log.d ("POST", "Fail " + t.getMessage());
+                    Log.d ("POST on fail", "Fail " + t.getMessage());
 
                     }
                 });
-
-                //
-//                Intent intent = new Intent(Register.this, CustomizeCharacter.class);
-//                intent.putExtra("userID", userID);
-//                startActivity(intent);
-
-//                Response.Listener<String> responseListener = new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) { // 회원가입 요청을 한 후 결과값을 json object로 받음
-//                        try {
-//                            JSONObject jsonObject = new JSONObject(response);
-//                            boolean success = jsonObject.getBoolean("success"); // 서버통신성공했음?
-//                            if(success) {
-//                                Toast.makeText(getApplicationContext(), "Register Succeeded", Toast.LENGTH_SHORT).show();
-//                                Intent intent = new Intent(Register.this, LoginLocal.class);
-//                                startActivity(intent);
-//                            }
-//                            else {
-//                                Toast.makeText(getApplicationContext(), "Register Failed", Toast.LENGTH_SHORT).show();
-//                                return;
-//                            }
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-//                };
-//
-//                RegisterRequest registerRequest = new RegisterRequest(userID, userPW, responseListener);
-//                RequestQueue queue = Volley.newRequestQueue(Register.this);
-//                queue.add(registerRequest);
-
 
             }
         });
