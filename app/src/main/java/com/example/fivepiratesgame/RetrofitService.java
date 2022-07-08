@@ -20,7 +20,7 @@ public interface RetrofitService {
     @POST("signup")
     Call<String> postUD(@Field("user_id") String user_id,
                           @Field("user_pw") String user_pw,
-                          @Field("user_name") String user_name);
+                        @Field("user_name") String user_name);
 
     @GET("signin")
     Call<String> getSignIn(@Query("user_id") String user_id,
