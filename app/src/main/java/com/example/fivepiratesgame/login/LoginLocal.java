@@ -140,8 +140,14 @@ public class LoginLocal extends AppCompatActivity {
                                 Log.d("POST success", result);
                                 loginViewModel.setLoginResult(new LoginResult(new LoggedInUserView(userID)));
 
-                                startActivity(new Intent(getApplicationContext(),
-                                        MainActivity.class).putExtra("userID", userID));
+                                //DB에서 ID로 username, avatarID 받아오기!!!!
+                                String userName = "John Doe";
+                                int avatarID = 2;
+
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class)
+                                        .putExtra("userID", userID)
+                                        .putExtra("userName", userName)
+                                        .putExtra("avatarID", avatarID));
                                 Log.d("Sign In success", result);
 
                             }
