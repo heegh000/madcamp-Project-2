@@ -1,8 +1,10 @@
-const express = require('express')
+const express = require('express');
+const app = express();
 const mysql = require('mysql');
 const crypto = require('crypto');
-
-const app = express()
+const { count } = require('console');
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 const port = 443;
 
 const connection = mysql.createConnection( {
@@ -24,16 +26,16 @@ app.post('/signup', async(req, res) => {
   } = req;
 
 
-  let sql = "SELECT user_id, user_pw FROM user_info WHERE user_id=?;";
-  let parm = [user_id];
+  let sql = `SELECT user_id, user_pw FROM user_info WHERE user_id=?`;
+  let param = [user_id];
 
-  connection.query(sql, parm, (error, rows) => {
+  connection.query(sql, param, (error, rows) => {
     if(rows.length == 0) {
 
-      const hash_pw = crypto.createHash('sha512').update(user_pw).digest("base64");
+      const hash_pw = crypto.createHash('sha512').update(user_pw).digest('base64');
 
-      let sql = 'INSERT INTO user_info SET ?';
-      let parm = {
+      let sql = `INSERT INTO user_info SET ?`;
+      let param = {
         user_id : user_id, 
         user_pw : hash_pw, 
         nickname : nickname,
@@ -42,16 +44,16 @@ app.post('/signup', async(req, res) => {
 
       console.log(user_id + " 계정 생성 시도")
 
-      connection.query(sql, parm, (error, rows, fields) => {
+      connection.query(sql, param, (error, rows, fields) => {
         if(error) throw errors;
         console.log(user_id + " 계정 생성 성공")
-        res.send("성공")
+        res.send("success")
       })
       
     }
     else {
       console.log(user_id + " 계정 생성 실패")
-      res.send("중복");
+      res.send("fail");
     }
 
   })
@@ -62,26 +64,26 @@ app.get('/signin', async(req, res) => {
   const user_id = req.query.user_id;
   const user_pw = req.query.user_pw;
 
-  let sql = "SELECT user_id, user_pw FROM login_info WHERE user_id=?;";
-  let parm = [user_id];
+  let sql = `SELECT user_id, user_pw FROM user_info WHERE user_id=?`;
+  let param = [user_id];
 
   console.log(user_id + " 로그인 시도")
 
-  connection.query(sql, parm, (error, rows) => {
+  connection.query(sql, param, (error, rows) => {
 
     if(rows.length == 0) {
       console.log(user_id + " 로그인 실패 ID")
-      res.send("f");
+      res.send("fail");
     }
     else {
       const hash_pw = crypto.createHash('sha512').update(user_pw).digest("base64");
       if( rows[0].user_pw == hash_pw) {
         console.log(user_id + " 로그인 성공")
-        res.send("p")
+        res.send("success")
       }
       else {
         console.log(user_id + " 로그인 실패 PW")
-        res.send("f");
+        res.send("fail");
       }
     }
   });
@@ -89,10 +91,10 @@ app.get('/signin', async(req, res) => {
 
 
 app.get('/history', async(req, res) => {
-  let sql = "SELECT DATE_FORMAT(time, '%y-%m-%d') AS time, result FROM history WHERE user_id=? ORDER BY time;"
-  let parm = [req.query.user_id];
+  let sql = `SELECT DATE_FORMAT(time, '%y-%m-%d') AS time, result FROM history WHERE user_id=? ORDER BY time`;
+  let param = [req.query.user_id];
 
-  connection.query(sql, parm, (error, rows) => {
+  connection.query(sql, param, (error, rows) => {
     console.log(rows);
     res.send(rows);
   });
@@ -100,8 +102,7 @@ app.get('/history', async(req, res) => {
 });
 
 app.get('/ranking', async(req, res) => {
-  let sql = "SELECT nickname, gold FROM user_info ORDER BY gold DESC LIMIT 20;"
-
+  let sql = `SELECT nickname, gold, avatar_id FROM user_info ORDER BY gold DESC LIMIT 20`;
   
   connection.query(sql, (error, rows) => {
     console.log(rows);
@@ -110,9 +111,110 @@ app.get('/ranking', async(req, res) => {
 
 });
 
+app.get('/userdata', async(req, res) => {
+
+  let sql =`
+  SELECT nickname, avatar_id, gold, 
+    (SELECT COUNT(*) FROM user_info AS ui2 WHERE ui2.gold > ui1.gold) + 1 AS rank
+  FROM user_info AS ui1
+  WHERE user_id=?;`;
+  let param = [req.query.user_id];
+
+  connection.query(sql, param, (error, rows) => {
+    const [row] = rows;
+    console.log(row);
+    res.send(row);
+  });
+});
+
+app.post('/create', async(req, res) => {
+  let sql = 'UPDATE user_info SET avatar_id=? WHERE user_id=?';
+  let param = [req.body.avatar_id, req.body.user_id]
+
+  connection.query(sql, param, (error, rows) => {
+    let sql = `
+    SELECT nickname, avatar_id, gold, 
+        (SELECT COUNT(*) FROM user_info AS ui2 WHERE ui2.gold > ui1.gold) + 1 AS rank
+    FROM user_info AS ui1
+    WHERE user_id=?`;
+    let param = [req.body.user_id];
 
 
-app.listen(port, () => {
+    connection.query(sql, param, (error, rows) => {
+      const [row] = rows;
+      console.log(row);
+      res.send(row);
+    });
+  });
+
+});
+
+let room_id = 0;
+let user_count = 0;
+let user_arr = new Array();
+
+io.on('connection', (socket) => {
+
+  console.log("New connection " + socket.id);
+
+
+  socket.on("test", (data)=> {
+    console.log("test" + data);
+    io.emit("test", "AAAAA");
+  });
+
+
+  socket.on('join', (data) => {
+    
+    console.log(data);
+
+    socket.join(room_id);
+
+    let user = new Object();
+    user.socket_id = socket.id;
+    user.user_id = data.user_id
+    user.room_id = room_id;
+
+    user_arr.push(user.user_id);
+
+    user_count ++;
+
+    let cur_count = {
+      count: user_count
+    }
+
+    console.log("join", cur_count, room_id);
+
+    io.to(room_id).emit('join', cur_count);
+
+    if(user_count == 5) {;
+      room_id ++;
+      user_count = 0;
+    }
+
+  });
+
+  socket.on('offer', (data) => {
+    let room = users.get(socket.id);
+    console.log(room);
+    io.to(room).emit('offer', data);
+  });
+
+  socket.on('disconnect', (data) => {
+    
+    user_count--;
+
+    let cur_count = {
+      count: user_count
+    }
+    console.log("dis", cur_count, room_id);
+    io.to(room_id).emit('join', cur_count);
+  });
+
+});
+
+
+server.listen(port, () => {
   console.log("start")
   
 });
