@@ -25,6 +25,7 @@ public class GameActivity extends AppCompatActivity {
 
 
         tvbringGold = findViewById(R.id.bringGold);
+        tvName = findViewById(R.id.tvName);
         avatar = findViewById(R.id.avatar);
 
         Intent intent = getIntent();

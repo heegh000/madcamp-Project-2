@@ -4,28 +4,46 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.fivepiratesgame.Global;
 import com.example.fivepiratesgame.R;
-import com.example.fivepiratesgame.login.LoginIntro;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import io.socket.emitter.Emitter;
 
 public class GameIntro extends AppCompatActivity {
 
     private final long finishtimeed = 1000;
     private long presstime = 0;
 
+    String userID;
+    String nickname;
+    int avatarID;
+    int bringGold;
+
+    TextView tvUserNum;
+
+    int userNum;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_intro);
 
-        Handler handler = new Handler();
-        handler.postDelayed(() -> {
-            Intent intent = new Intent (getApplicationContext(), GameActivity.class);
-            startActivity(intent); //인트로 동안 함께 플레이할 참가자들 찾고 game 넘어감. // 게임룰 설명??
-            finish();
-        },2000); //2초 후 실행 // 지금은 delay로 해놨는데 참가자 찾을 때까지로 조건 바꿔야함!
+        Intent intent = getIntent();
+        userID = intent.getStringExtra("userID");
+        nickname = intent.getStringExtra("nickname");
+        avatarID = intent.getIntExtra("avatarID", 0);
+        bringGold = intent.getIntExtra("gold", 0);
+
+        tvUserNum = findViewById(R.id.tvUserNum);
+
+        socket();
+
     }
 
     @Override
@@ -35,6 +53,7 @@ public class GameIntro extends AppCompatActivity {
 
         if (0 <= intervalTime && finishtimeed >= intervalTime)
         {
+            Global.socket.disconnect();
             finish();
         }
         else
@@ -42,5 +61,40 @@ public class GameIntro extends AppCompatActivity {
             presstime = tempTime;
             Toast.makeText(getApplicationContext(), "한 번 더 누르시면 대기열에서 나갑니다", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void socket() {
+        Global.socket.connect();
+
+        JSONObject data = new JSONObject();
+        try {
+            data.put("user_id", userID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Global.socket.emit("join", data);
+        Global.socket.on("join", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                try {
+                    JSONObject data = (JSONObject) args[0];
+                    userNum = (int) data.get("count");
+
+                    tvUserNum.setText(Integer.toString(userNum) + " / 5");
+
+                    if(userNum == 5) {
+                        startActivity(new Intent(getApplicationContext(), GameActivity.class)
+                                .putExtra("userID", userID)
+                                .putExtra("nickname", nickname)
+                                .putExtra("avatarID", avatarID)
+                                .putExtra("gold", bringGold));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 }

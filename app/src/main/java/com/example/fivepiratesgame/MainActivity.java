@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fivepiratesgame.game.GameActivity;
+import com.example.fivepiratesgame.game.GameIntro;
 import com.example.fivepiratesgame.history.History;
 import com.example.fivepiratesgame.login.LoginIntro;
 import com.example.fivepiratesgame.ranking.Ranking;
@@ -116,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 Log.d("bringGold", String.valueOf(bringGold));
 
-                                startActivity(new Intent(getApplicationContext(), GameActivity.class)
+                                startActivity(new Intent(getApplicationContext(), GameIntro.class)
                                         .putExtra("userID", userID)
                                         .putExtra("nickname", nickname)
                                         .putExtra("avatarID", avatarID)

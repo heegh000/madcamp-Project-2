@@ -8,6 +8,20 @@
     tools:context=".game.GameActivity">
 
     <TextView
+        android:id="@+id/tvUserNum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="0 / 5"
+        android:textSize="35dp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/xbones"
+        android:gravity="center"/>
+
+    <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
