@@ -27,7 +27,7 @@ public class History extends AppCompatActivity {
 
     private String userID;
 
-    private List<HistoryData> historyArrayList;
+    private List<HistoryData> historyList;
     private HistoryAdapter historyAdapter;
     private RecyclerView rvHistory;
 
@@ -57,8 +57,8 @@ public class History extends AppCompatActivity {
         Intent intent = getIntent();
         userID = intent.getStringExtra("usreID");
 
-        historyArrayList = new ArrayList<>();
-        historyAdapter = new HistoryAdapter(this, (List<HistoryData>) historyArrayList);
+        historyList = new ArrayList<>();
+        historyAdapter = new HistoryAdapter(this, (List<HistoryData>) historyList);
         rvHistory = (RecyclerView) findViewById(R.id.rvHistroy);
         rvHistory.setLayoutManager(new LinearLayoutManager(this));
         rvHistory.setAdapter(historyAdapter);
@@ -69,7 +69,8 @@ public class History extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<HistoryData>> call, Response<List<HistoryData>> response) {
                 if(response.isSuccessful()) {
-                    historyArrayList = response.body();
+                    historyList.clear();
+                    historyList.addAll(response.body());
                     historyAdapter.notifyDataSetChanged();
                 }
                 else {

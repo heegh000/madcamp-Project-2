@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fivepiratesgame.R;
 import com.example.fivepiratesgame.RetrofitService;
+import com.example.fivepiratesgame.UserData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -24,7 +25,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class Ranking extends AppCompatActivity {
 
-    private List<RankingData> rankArrayList;
+    private List<UserData> rankingList;
 
     private RankingAdapter rankAdapter;
     private RecyclerView rvRanking;
@@ -53,19 +54,20 @@ public class Ranking extends AppCompatActivity {
     }
 
     private void initRanking() {
-        rankArrayList = new ArrayList<>();
-        rankAdapter = new RankingAdapter(this, rankArrayList);
+        rankingList = new ArrayList<>();
+        rankAdapter = new RankingAdapter(this, rankingList);
         rvRanking = (RecyclerView) findViewById(R.id.rvRanking);
         rvRanking.setLayoutManager(new LinearLayoutManager(this));
         rvRanking.setAdapter(rankAdapter);
     }
 
     private void getRanking() {
-        service.getRanking().enqueue((new Callback<List<RankingData>>() {
+        service.getRanking().enqueue((new Callback<List<UserData>>() {
             @Override
-            public void onResponse(Call<List<RankingData>> call, Response<List<RankingData>> response) {
+            public void onResponse(Call<List<UserData>> call, Response<List<UserData>> response) {
                 if(response.isSuccessful()) {
-                    rankArrayList = response.body();
+                    rankingList.clear();
+                    rankingList.addAll(response.body());
                     rankAdapter.notifyDataSetChanged();
                 }
                 else {
@@ -74,7 +76,7 @@ public class Ranking extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<RankingData>> call, Throwable t) {
+            public void onFailure(Call<List<UserData>> call, Throwable t) {
                 Log.d ("Ranking GET on fail", t.getMessage());
             }
         }));

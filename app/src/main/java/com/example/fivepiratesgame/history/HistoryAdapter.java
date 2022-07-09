@@ -37,6 +37,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     public void onBindViewHolder(@NonNull HistoryAdapter.HistoryViewHolder holder, int position) {
         HistoryData hisData = historyList.get(position);
 
+
         holder.tvDate.setText(hisData.getTime());
         holder.tvResult.setText(hisData.getResult());
     }
