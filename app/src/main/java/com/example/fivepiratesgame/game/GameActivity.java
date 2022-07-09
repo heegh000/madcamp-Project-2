@@ -24,7 +24,6 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        tvName = findViewById(R.id.username);
         tvbringGold = findViewById(R.id.bringGold);
         avatar = findViewById(R.id.avatar);
 

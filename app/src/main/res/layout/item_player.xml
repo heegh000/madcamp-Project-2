@@ -3,33 +3,34 @@
     android:background="@drawable/game_textbox"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:weightSum="1"
     android:orientation="horizontal">
 
     <TextView
         android:id="@+id/tvOrder"
         android:layout_width="80dp"
         android:layout_height="match_parent"
-        android:paddingHorizontal="15dp"
         android:fontFamily="@font/xbonesbold"
         android:gravity="center"
+        android:layout_weight="0.1"
         android:text="order"
         android:textSize="20dp" />
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:layout_margin="1dp"
         android:id="@+id/cardView"
-        >
+        android:layout_width="32dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:layout_weight="0.4">
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/pikachu" />
@@ -40,9 +41,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/imageView"
                 android:layout_centerHorizontal="true"
-                android:textSize="20dp"
                 android:fontFamily="@font/xbones"
-                android:text="Name" />
+                android:text="Name"
+                android:textSize="20dp" />
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
@@ -52,6 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginLeft="30dp"
+        android:layout_weight="0.4"
         android:fontFamily="@font/xbones"
         android:gravity="center"
         android:text="gold"
@@ -59,12 +61,12 @@
 
     <ImageView
         android:id="@+id/ivMsg"
-        android:src="@drawable/ic_msg"
         android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:text="gold"
-        android:textSize="20dp" />
+        android:padding="10dp"
+        android:layout_weight="0.1"
+        android:src="@drawable/ic_msg" />
 
 
 </LinearLayout>
