@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.HashMap;
 import static com.example.fivepiratesgame.MainActivity.mapAvatar;
 
+import com.example.fivepiratesgame.login.LoginIntro;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -42,10 +43,6 @@ public class CustomizeCharacter extends AppCompatActivity {
         setContentView(R.layout.activity_customize_character);
 
         initRetrofit();
-
-        mapAvatar.put(0, R.drawable.bulbasaur);
-        mapAvatar.put(1, R.drawable.charmander);
-        mapAvatar.put(2, R.drawable.egg);
 
         tvName = findViewById(R.id.tvName);
         avatar = findViewById(R.id.avatar);
@@ -91,13 +88,16 @@ public class CustomizeCharacter extends AppCompatActivity {
 
                     UserData uData = response.body();
 
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class)
-                            .putExtra("userID", userID)
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("userID", userID)
                             .putExtra("nickname", uData.getNickname())
                             .putExtra("avatarID", uData.getAvatarID())
                             .putExtra("gold", uData.getGold())
-                            .putExtra("rank", uData.getRank()));
+                            .putExtra("rank", uData.getRank());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 }
+
                 else {
                     Log.d("postCreateUser fail", "error = " + String.valueOf(response.code()) + response.errorBody());
                 }

@@ -1,17 +1,21 @@
 package com.example.fivepiratesgame;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.fivepiratesgame.game.GameActivity;
 import com.example.fivepiratesgame.history.History;
+import com.example.fivepiratesgame.login.LoginIntro;
 import com.example.fivepiratesgame.ranking.Ranking;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvName, tvID, history, ranking, tvRank, tvGold;
     private ImageView avatar;
     private AppCompatButton playgame;
+    private TextView logout;
 
     private RetrofitService service;
 
@@ -62,11 +67,11 @@ public class MainActivity extends AppCompatActivity {
         playgame = findViewById(R.id.playgame);
         history = findViewById(R.id.history);
         ranking = findViewById(R.id.ranking);
+        logout = findViewById(R.id.logout);
 
-        // 아바타, 이름, 골드 등등 정보도 DB에서 가져오기
+        // 아바타, 이름, 골드 등등 정보 가져오기
 
         Intent intent = getIntent();
-
 
         userID = intent.getStringExtra("userID");
         String nickname = intent.getStringExtra("nickname");
@@ -103,6 +108,36 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), Ranking.class));
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+                builder.setCancelable(true);
+                builder.setTitle("Log out");
+                builder.setMessage("Are you sure?");
+
+                builder.setPositiveButton("Confirm",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(getApplicationContext(), LoginIntro.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                Toast.makeText(getApplicationContext(), "Logged out", Toast.LENGTH_LONG).show();
+                                finish();
+                            }
+                        });
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {}
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
             }
         });
     }
