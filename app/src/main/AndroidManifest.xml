@@ -17,6 +17,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".game.GameIntro"
+            android:exported="false" />
+        <activity
             android:name=".game.GameActivity"
             android:exported="false" />
         <activity
@@ -32,7 +35,7 @@
             android:name=".history.History"
             android:exported="false" />
         <activity
-            android:name=".CustomizeCharacter"
+            android:name=".login.CustomizeCharacter"
             android:exported="false" />
         <activity
             android:name=".login.LoginIntro"
