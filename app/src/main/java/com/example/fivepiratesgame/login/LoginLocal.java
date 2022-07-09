@@ -4,7 +4,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import android.app.Activity;
@@ -12,24 +11,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.CharacterPickerDialog;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fivepiratesgame.MainActivity;
 import com.example.fivepiratesgame.R;
 import com.example.fivepiratesgame.RetrofitService;
+import com.example.fivepiratesgame.UserData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,9 +32,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class LoginLocal extends AppCompatActivity {
 
-    String BASE_URL = "http://172.10.5.52:443/";
-    Retrofit retrofit;
-    RetrofitService service;
+    private RetrofitService service;
 
     private EditText et_id, et_pw;
     private AppCompatButton loginBtn;
@@ -54,13 +44,7 @@ public class LoginLocal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_local);
 
-        Gson gson = new GsonBuilder().setLenient().create();
-
-        retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(gson)).build();
-
-        service = retrofit.create(RetrofitService.class);
+        initRetrofit();
 
         loginViewModel = new LoginViewModel();
 
@@ -129,45 +113,9 @@ public class LoginLocal extends AppCompatActivity {
                 String userID = et_id.getText().toString();
                 String userPW = et_pw.getText().toString();
 
+                getSignIn(userID, userPW);
+
                 Log.d("click", "login");
-                Call<String> signIn = service.getSignIn(userID, userPW);
-                signIn.enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {// 로그인 요청을 한 후 결과값 받음
-                        if(response.isSuccessful()){ // 서버통신성공했음?
-                            try {
-                                String result = response.body().toString();
-                                Log.d("POST success", result);
-                                loginViewModel.setLoginResult(new LoginResult(new LoggedInUserView(userID)));
-
-                                //DB에서 ID로 username, avatarID, gold, ranking 받아오기!!!!
-                                String userName = "John Doe";
-                                int avatarID = 2;
-
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class)
-                                        .putExtra("userID", userID)
-                                        .putExtra("userName", userName)
-                                        .putExtra("avatarID", avatarID));
-                                Log.d("Sign In success", result);
-
-                            }
-                            catch (Exception e){
-                                e.printStackTrace();
-                            }
-                        }
-                        else {
-                            loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
-                            Log.d("Sign In fail", "error = " + String.valueOf(response.code()) + response.errorBody());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
-                        Log.d ("Sign In on fail", t.getMessage());
-
-                    }
-                });
             }
         });
     }
@@ -178,6 +126,77 @@ public class LoginLocal extends AppCompatActivity {
     }
     private void showLoginFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+    }
+
+    private void initRetrofit() {
+        Gson gson = new GsonBuilder().setLenient().create();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(getString(R.string.base_url))
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson)).build();
+
+        service = retrofit.create(RetrofitService.class);
+    }
+
+
+    private void getSignIn(String userID, String userPW) {
+        service.getSignIn(userID, userPW).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {// 로그인 요청을 한 후 결과값 받음
+                if(response.isSuccessful()){ // 서버통신성공했음?
+                    try {
+                        String result = response.body().toString();
+                        Log.d("Sign In success", result);
+
+                        getUserData(userID);
+
+                        loginViewModel.setLoginResult(new LoginResult(new LoggedInUserView(userID)));
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
+                    Log.d("Sign In fail", "error = " + String.valueOf(response.code()) + response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                loginViewModel.setLoginResult(new LoginResult(R.string.login_failed));
+                Log.d ("Sign In on fail", t.getMessage());
+
+            }
+        });
+    }
+
+    private void getUserData(String userID) {
+        service.getUserData(userID).enqueue(new Callback<UserData>() {
+            @Override
+            public void onResponse(Call<UserData> call, Response<UserData> response) {
+                if(response.isSuccessful()) {
+                    //DB에서 ID로 username, avatarID, gold, ranking 받아오기!!!!
+                    UserData uData = response.body();
+
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("userID", userID)
+                            .putExtra("nickname", uData.getNickname())
+                            .putExtra("avatarID", uData.getAvatarID())
+                            .putExtra("gold", uData.getGold())
+                            .putExtra("rank", uData.getRank());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+                else {
+                    Log.d("Sign In getUser fail", "error = " + String.valueOf(response.code()) + response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserData> call, Throwable t) {
+                Log.d ("Sign In getUser on fail", t.getMessage());
+            }
+        });
     }
 
 }

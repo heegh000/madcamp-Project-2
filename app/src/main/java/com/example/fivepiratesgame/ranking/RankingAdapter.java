@@ -13,15 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.fivepiratesgame.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingViewHolder> {
 
-    private ArrayList<RankingData> rankingArrayList;
+    private List<RankingData> rankingList;
     private final Context context;
 
-    public RankingAdapter(Context context, ArrayList<RankingData> rankingArrayList) {
+    public RankingAdapter(Context context, List<RankingData> rankingList) {
         this.context = context;
-        this.rankingArrayList = rankingArrayList;
+        this.rankingList = rankingList;
     }
 
     @NonNull
@@ -35,7 +36,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingV
 
     @Override
     public void onBindViewHolder(@NonNull RankingViewHolder holder, int position) {
-        RankingData rankData = rankingArrayList.get(position);
+        RankingData rankData = rankingList.get(position);
 
         holder.tvNickname.setText(rankData.getNickname());
         holder.tvGold.setText(rankData.getGold());
@@ -43,7 +44,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingV
 
     @Override
     public int getItemCount() {
-        return rankingArrayList.size();
+        return rankingList.size();
     }
 
     public class RankingViewHolder extends RecyclerView.ViewHolder {

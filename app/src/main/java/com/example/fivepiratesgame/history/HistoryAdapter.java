@@ -12,16 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fivepiratesgame.R;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
 
-    private ArrayList<HistoryData> historyArrayList;
+    private List<HistoryData> historyList;
     private final Context context;
 
-    public HistoryAdapter(Context context, ArrayList<HistoryData> historyArrayList) {
+    public HistoryAdapter(Context context, List<HistoryData> historyList) {
         this.context = context;
-        this.historyArrayList = historyArrayList;
+        this.historyList = historyList;
     }
 
     @NonNull
@@ -35,7 +35,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
     @Override
     public void onBindViewHolder(@NonNull HistoryAdapter.HistoryViewHolder holder, int position) {
-        HistoryData hisData = historyArrayList.get(position);
+        HistoryData hisData = historyList.get(position);
 
         holder.tvDate.setText(hisData.getTime());
         holder.tvResult.setText(hisData.getResult());
@@ -43,7 +43,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
     @Override
     public int getItemCount() {
-        return historyArrayList.size();
+        return historyList.size();
     }
 
     public class HistoryViewHolder extends RecyclerView.ViewHolder {
