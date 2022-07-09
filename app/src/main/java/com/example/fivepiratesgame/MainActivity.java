@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), GameActivity.class)
                         .putExtra("userID", userID)
-                        .putExtra("userName", nickname)
+                        .putExtra("nickname", nickname)
                         .putExtra("avatarID", avatarID));
             }
         });
