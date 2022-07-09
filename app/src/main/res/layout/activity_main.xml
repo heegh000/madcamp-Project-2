@@ -25,7 +25,7 @@
         android:id="@+id/tvID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="1dp"
         android:gravity="center"
         android:text="userID"
         android:textColor="@color/white"
@@ -35,7 +35,7 @@
     <ImageView
         android:id="@+id/avatar"
         android:layout_width="wrap_content"
-        android:layout_height="240dp"
+        android:layout_height="220dp"
         android:src="@drawable/pikachu"
         app:layout_constraintBottom_toTopOf="@id/charInfo"
         app:layout_constraintTop_toBottomOf="@+id/tvID"
@@ -51,7 +51,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvID"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="-20dp"
+        android:layout_marginTop="-25dp"
         />
 
     <LinearLayout
@@ -168,14 +168,15 @@
         android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:gravity="center"
         android:text="L o g  o u t"
         android:textColor="#095F87"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="15dp"
         android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
 
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linearLayout" />
 
 

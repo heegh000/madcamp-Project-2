@@ -4,15 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/game_bg"
+    android:background="@drawable/game_bg_2"
     tools:context=".game.GameActivity">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="GAME"
-        android:textSize="24sp"
+        android:text="Finding \nyour \ncrew..."
+        android:gravity="center"
+        android:textColor="#873317"
+        android:textSize="64sp"
+        android:fontFamily="@font/xbones"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

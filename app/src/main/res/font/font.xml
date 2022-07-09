@@ -5,5 +5,7 @@
         android:font="@font/xbones3d"/>
     <font android:fontStyle="normal"
         android:font="@font/xbones"/>
+    <font android:fontStyle="normal"
+        android:font="@font/xbonesbold"/>
 
 </font-family>

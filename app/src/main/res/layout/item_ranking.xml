@@ -5,24 +5,24 @@
 
     <TextView
         android:id="@+id/tvRank"
-        android:layout_width="25dp"
+        android:layout_width="50dp"
         android:layout_height="match_parent"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="15dp"
-        android:fontFamily="@font/xbones"
+        android:fontFamily="@font/xbonesbold"
         android:gravity="center"
         android:text="rank"
-        android:textSize="20dp" />
+        android:textSize="30dp" />
 
     <ImageView
         android:id="@+id/ivRankProfile"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:src="@drawable/ic_launcher_background" />
 
     <TextView
         android:id="@+id/tvNickname"
-        android:layout_width="100dp"
+        android:layout_width="120dp"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
         android:fontFamily="@font/xbones"
@@ -35,7 +35,7 @@
         android:id="@+id/tvGold"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="40dp"
+        android:layout_marginLeft="30dp"
         android:fontFamily="@font/xbones"
         android:gravity="center"
         android:text="gold"
