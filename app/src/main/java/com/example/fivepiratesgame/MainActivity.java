@@ -156,12 +156,11 @@ public class MainActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     UserData uData = response.body();
 
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class)
-                            .putExtra("userID", userID)
-                            .putExtra("nickname", uData.getNickname())
-                            .putExtra("avatarID", uData.getAvatarID())
-                            .putExtra("gold", uData.getGold())
-                            .putExtra("rank", uData.getRank()));
+                    tvName.setText(uData.getNickname());
+                    tvID.setText(userID);
+                    avatar.setImageResource(mapAvatar.get(uData.getAvatarID()));
+                    tvRank.setText(uData.getRank());
+                    tvGold.setText(uData.getGold());
                 }
                 else {
                     Log.d("Main getUser fail", "error = " + String.valueOf(response.code()) + response.errorBody());
