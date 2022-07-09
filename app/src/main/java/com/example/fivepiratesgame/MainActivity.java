@@ -71,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
         userID = intent.getStringExtra("userID");
         String nickname = intent.getStringExtra("nickname");
         int avatarID = intent.getIntExtra("avatarID", 2);
-        int rank = Integer.parseInt(intent.getStringExtra("rank"));
-        int gold = Integer.parseInt(intent.getStringExtra("gold"));
+        String rank = intent.getStringExtra("rank");
+        String gold = intent.getStringExtra("gold");
 
 
         tvName.setText(nickname);
