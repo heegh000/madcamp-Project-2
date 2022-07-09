@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 
+import java.net.URISyntaxException;
 import java.util.HashMap;
 
 import retrofit2.Call;
@@ -50,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView logout;
 
     private RetrofitService service;
+
+    private int bringGold = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,13 +90,43 @@ public class MainActivity extends AppCompatActivity {
         tvRank.setText(rank);
         tvGold.setText(gold);
 
+
         playgame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), GameActivity.class)
-                        .putExtra("userID", userID)
-                        .putExtra("nickname", nickname)
-                        .putExtra("avatarID", avatarID));
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setCancelable(true);
+                builder.setTitle("비상금을 챙겨가시겠습니까?");
+                builder.setMessage("현재 보유 금화 : "+ gold);
+
+                final EditText et_bringGold = new EditText(MainActivity.this);
+                builder.setView(et_bringGold);
+
+                builder.setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                bringGold = Integer.parseInt(et_bringGold.getText().toString());
+
+                                if (Integer.parseInt(gold) < bringGold) {
+                                    Toast.makeText(getApplicationContext(), "현재 보유 금화보다 많은 금화를 가져갈 수 없습니다", Toast.LENGTH_LONG).show();
+                                    bringGold = 0;
+                                }
+
+                                Log.d("bringGold", String.valueOf(bringGold));
+
+                                startActivity(new Intent(getApplicationContext(), GameActivity.class)
+                                        .putExtra("userID", userID)
+                                        .putExtra("nickname", nickname)
+                                        .putExtra("avatarID", avatarID)
+                                        .putExtra("gold", bringGold));
+
+//                                finish();
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
@@ -182,5 +216,6 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create(gson)).build();
         service = retrofit.create(RetrofitService.class);
     }
+
 
 }

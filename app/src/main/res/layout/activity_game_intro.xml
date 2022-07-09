@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Finding \nyour \ncrew..."
         android:gravity="center"
-        android:textColor="#873317"
+        android:textColor="#941224"
         android:textSize="64sp"
         android:fontFamily="@font/xbones"
         app:layout_constraintBottom_toBottomOf="parent"

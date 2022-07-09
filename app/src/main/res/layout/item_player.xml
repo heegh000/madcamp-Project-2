@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/game_textbox"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="1"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tvOrder"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/xbonesbold"
+        android:gravity="center"
+        android:layout_weight="0.1"
+        android:text="order"
+        android:textSize="20dp" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="32dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:layout_weight="0.4">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/pikachu" />
+
+            <TextView
+                android:id="@+id/tvNickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageView"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/xbones"
+                android:text="Name"
+                android:textSize="20dp" />
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tvGold"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="30dp"
+        android:layout_weight="0.4"
+        android:fontFamily="@font/xbones"
+        android:gravity="center"
+        android:text="gold"
+        android:textSize="20dp" />
+
+    <ImageView
+        android:id="@+id/ivMsg"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="10dp"
+        android:layout_weight="0.1"
+        android:src="@drawable/ic_msg" />
+
+
+</LinearLayout>

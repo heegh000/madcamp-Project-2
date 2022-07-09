@@ -49,9 +49,13 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.6.4'
     implementation 'com.squareup.retrofit2:converter-scalars:2.6.4'
 
+<<<<<<< HEAD
 
     implementation ('io.socket:socket.io-client:2.0.1') {
         // excluding org.json which is provided by Android
         exclude group: 'org.json', module: 'json'
     }
+=======
+    implementation 'com.github.nkzawa:socket.io-client:0.6.0'
+>>>>>>> 430d1fe2b7f405d58330ff1e57623366237c4fe7
 }

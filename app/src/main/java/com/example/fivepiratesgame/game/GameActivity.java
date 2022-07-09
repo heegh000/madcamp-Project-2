@@ -4,70 +4,39 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.example.fivepiratesgame.R;
 
-import io.socket.client.IO;
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
+import static com.example.fivepiratesgame.MainActivity.mapAvatar;
 
 public class GameActivity extends AppCompatActivity {
 
-    ImageView player1;
+    private TextView tvName, tvbringGold;
+    private ImageView avatar;
+
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        player1 = findViewById(R.id.player1);
+
+        tvbringGold = findViewById(R.id.bringGold);
+        avatar = findViewById(R.id.avatar);
 
         Intent intent = getIntent();
+
+        userID = intent.getStringExtra("userID");
         String nickname = intent.getStringExtra("nickname");
+        int avatarID = intent.getIntExtra("avatarID", 2);
+        int bringGold = intent.getIntExtra("gold", 0);
 
-        try {
-            socket = IO.socket("http://192.249.18.135:443");
+        tvName.setText(nickname);
+        avatar.setImageResource(mapAvatar.get(avatarID));
+        tvbringGold.setText(String.valueOf(bringGold));
 
-            socket.on("join", new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(), "AAAAAAA", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-            });
-
-            socket.on("offer", new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(), args[0].toString(), Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-            });
-
-            socket.connect();
-            socket.emit("test", nickname);
-            socket.emit("join", "join test");
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        player1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                socket.emit("offer", "offer test");
-            }
-        });
     }
 }
