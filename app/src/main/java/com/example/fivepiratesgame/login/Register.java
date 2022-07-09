@@ -14,8 +14,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.fivepiratesgame.CustomizeCharacter;
-import com.example.fivepiratesgame.MainActivity;
 import com.example.fivepiratesgame.R;
 import com.example.fivepiratesgame.RetrofitService;
 import com.google.gson.Gson;

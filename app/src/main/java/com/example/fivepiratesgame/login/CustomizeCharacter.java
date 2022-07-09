@@ -1,4 +1,4 @@
-package com.example.fivepiratesgame;
+package com.example.fivepiratesgame.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -14,6 +14,10 @@ import android.widget.TextView;
 import java.util.HashMap;
 import static com.example.fivepiratesgame.MainActivity.mapAvatar;
 
+import com.example.fivepiratesgame.MainActivity;
+import com.example.fivepiratesgame.R;
+import com.example.fivepiratesgame.RetrofitService;
+import com.example.fivepiratesgame.UserData;
 import com.example.fivepiratesgame.login.LoginIntro;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
