@@ -4,7 +4,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import android.app.Activity;
@@ -12,14 +11,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.CharacterPickerDialog;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fivepiratesgame.MainActivity;
@@ -28,9 +22,6 @@ import com.example.fivepiratesgame.RetrofitService;
 import com.example.fivepiratesgame.UserData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -122,7 +113,7 @@ public class LoginLocal extends AppCompatActivity {
                 String userID = et_id.getText().toString();
                 String userPW = et_pw.getText().toString();
 
-                getSingIn(userID, userPW);
+                getSignIn(userID, userPW);
 
                 Log.d("click", "login");
             }
@@ -147,7 +138,7 @@ public class LoginLocal extends AppCompatActivity {
     }
 
 
-    private void getSingIn(String userID, String userPW) {
+    private void getSignIn(String userID, String userPW) {
         service.getSignIn(userID, userPW).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {// 로그인 요청을 한 후 결과값 받음
@@ -187,12 +178,14 @@ public class LoginLocal extends AppCompatActivity {
                     //DB에서 ID로 username, avatarID, gold, ranking 받아오기!!!!
                     UserData uData = response.body();
 
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class)
-                            .putExtra("userID", userID)
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("userID", userID)
                             .putExtra("nickname", uData.getNickname())
                             .putExtra("avatarID", uData.getAvatarID())
                             .putExtra("gold", uData.getGold())
-                            .putExtra("rank", uData.getRank()));
+                            .putExtra("rank", uData.getRank());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 }
                 else {
                     Log.d("Sign In getUser fail", "error = " + String.valueOf(response.code()) + response.errorBody());
