@@ -3,6 +3,7 @@ package com.example.fivepiratesgame;
 import com.example.fivepiratesgame.history.HistoryData;
 import com.example.fivepiratesgame.ranking.RankingData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -17,11 +18,11 @@ public interface RetrofitService {
 
     @FormUrlEncoded
     @POST("signup")
-    Call<String> postUD(@Field("user_id") String user_id,
-                          @Field("user_pw") String user_pw,
-                          @Field("nickname") String nickname);
+    Call<String> postSignUp(@Field("user_id") String user_id,
+                            @Field("user_pw") String user_pw,
+                            @Field("nickname") String nickname);
 
-    @GET("{path}/signin")
+    @GET("signin")
     Call<String> getSignIn(@Query("user_id") String user_id,
                             @Query("user_pw") String user_pw);
 
@@ -30,4 +31,12 @@ public interface RetrofitService {
 
     @GET("ranking")
     Call<List<RankingData>> getRanking();
+
+    @GET("userdata")
+    Call<UserData> getUserData(@Query("user_id") String user_id);
+
+    @FormUrlEncoded
+    @POST("create")
+    Call<UserData> postCreateUser(@Field("user_id") String user_id,
+                                  @Field("avatar_id") String avatar_id);
 }
