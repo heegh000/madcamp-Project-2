@@ -44,7 +44,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvHistroy"
         android:fontFamily="@font/xbones"
-        android:textColor="#fff"
+        android:textColor="@color/white"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

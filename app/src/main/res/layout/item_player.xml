@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/game_textbox"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvOrder"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="15dp"
+        android:fontFamily="@font/xbonesbold"
+        android:gravity="center"
+        android:text="order"
+        android:textSize="20dp" />
+
+    <ImageView
+        android:id="@+id/ivProfile"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ic_launcher_background" />
+
+    <TextView
+        android:id="@+id/tvNickname"
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:fontFamily="@font/xbones"
+        android:gravity="center"
+        android:text="name"
+        android:textSize="20dp" />
+
+
+    <TextView
+        android:id="@+id/tvGold"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="30dp"
+        android:fontFamily="@font/xbones"
+        android:gravity="center"
+        android:text="gold"
+        android:textSize="20dp" />
+
+
+</LinearLayout>
