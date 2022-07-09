@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,11 +33,11 @@ public class GameActivity extends AppCompatActivity {
         userID = intent.getStringExtra("userID");
         String nickname = intent.getStringExtra("nickname");
         int avatarID = intent.getIntExtra("avatarID", 2);
-        String gold = intent.getStringExtra("gold");
+        int bringGold = intent.getIntExtra("gold", 0);
 
         tvName.setText(nickname);
         avatar.setImageResource(mapAvatar.get(avatarID));
-        tvbringGold.setText(gold);
+        tvbringGold.setText(String.valueOf(bringGold));
 
     }
 }

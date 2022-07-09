@@ -103,19 +103,21 @@ public class MainActivity extends AppCompatActivity {
                 builder.setTitle("비상금을 챙겨가시겠습니까?");
                 builder.setMessage("현재 보유 금화 : "+ gold);
 
-                final EditText input = new EditText(MainActivity.this);
-                builder.setView(input);
+                final EditText et_bringGold = new EditText(MainActivity.this);
+                builder.setView(et_bringGold);
 
                 builder.setPositiveButton("Yes",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                bringGold = Integer.parseInt(input.getText().toString());
+                                bringGold = Integer.parseInt(et_bringGold.getText().toString());
+
                                 if (Integer.parseInt(gold) < bringGold) {
                                     Toast.makeText(getApplicationContext(), "현재 보유 금화보다 많은 금화를 가져갈 수 없습니다", Toast.LENGTH_LONG).show();
                                     bringGold = 0;
                                 }
 
+                                Log.d("bringGold", String.valueOf(bringGold));
 
                                 startActivity(new Intent(getApplicationContext(), GameActivity.class)
                                         .putExtra("userID", userID)
@@ -123,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                                         .putExtra("avatarID", avatarID)
                                         .putExtra("gold", bringGold));
 
-                                finish();
+//                                finish();
                             }
                         });
                 AlertDialog dialog = builder.create();
