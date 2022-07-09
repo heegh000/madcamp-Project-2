@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.fivepiratesgame.R;
 import com.example.fivepiratesgame.RetrofitService;
@@ -33,6 +35,8 @@ public class History extends AppCompatActivity {
 
     private RetrofitService service;
 
+    private TextView goback;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +46,14 @@ public class History extends AppCompatActivity {
         initHistory();
 
         getHistory(userID);
+
+        goback = findViewById(R.id.goback);
+        goback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     private void initRetrofit() {

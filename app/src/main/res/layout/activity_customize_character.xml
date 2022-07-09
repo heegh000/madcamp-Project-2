@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="Choose your avatar! \nThree Characters Available."
+        android:text="Tap to Choose your avatar! \nThree Characters Available."
         android:fontFamily="@font/xbones"
         android:textColor="@color/white"
         android:textSize="20dp"

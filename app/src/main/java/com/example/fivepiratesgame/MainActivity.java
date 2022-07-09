@@ -182,4 +182,5 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create(gson)).build();
         service = retrofit.create(RetrofitService.class);
     }
+
 }

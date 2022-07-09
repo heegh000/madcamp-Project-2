@@ -2,6 +2,8 @@ package com.example.fivepiratesgame.ranking;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,6 +34,8 @@ public class Ranking extends AppCompatActivity {
 
     private RetrofitService service;
 
+    private TextView goback;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +45,14 @@ public class Ranking extends AppCompatActivity {
         initRanking();
 
         getRanking();
+
+        goback = findViewById(R.id.goback);
+        goback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
 
