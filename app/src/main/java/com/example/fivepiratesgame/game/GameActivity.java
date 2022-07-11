@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -199,7 +200,7 @@ public class GameActivity extends AppCompatActivity {
 
                 tvUserNum.setText(Integer.toString(userNum) + " / 5");
 
-                if (userNum == 2) {
+                if (userNum == 5) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -405,19 +406,19 @@ public class GameActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 int gold5, gold4, gold3, gold2, gold1;
 
-                if(etG5.getText().equals("")) { gold5 = 0; }
+                if(TextUtils.isEmpty(etG5.getText())) { gold5 = 0; }
                 else gold5 = Integer.parseInt(etG5.getText().toString());
 
-                if(etG4.getText().equals("")) { gold4 = 0; }
+                if(TextUtils.isEmpty(etG4.getText())) { gold4 = 0; }
                 else gold4 = Integer.parseInt(etG4.getText().toString());
 
-                if(etG3.getText().equals("")) { gold3 = 0; }
+                if(TextUtils.isEmpty(etG3.getText())) { gold3 = 0; }
                 else gold3 = Integer.parseInt(etG3.getText().toString());
 
-                if(etG2.getText().equals("")) { gold2 = 0; }
+                if(TextUtils.isEmpty(etG2.getText())) { gold2 = 0; }
                 else gold2 = Integer.parseInt(etG2.getText().toString());
 
-                if(etG1.getText().equals("")) { gold1 = 0; }
+                if(TextUtils.isEmpty(etG1.getText())) { gold1 = 0; }
                 else gold1 = Integer.parseInt(etG1.getText().toString());
 
                 int total = gold5 + gold4 + gold3 + gold2 + gold1;

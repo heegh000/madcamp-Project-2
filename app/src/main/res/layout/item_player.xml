@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/tvOrder"
-        android:layout_width="80dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
         android:fontFamily="@font/xbonesbold"
         android:gravity="center"
