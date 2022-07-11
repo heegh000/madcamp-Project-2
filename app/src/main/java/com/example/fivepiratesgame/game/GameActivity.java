@@ -173,8 +173,11 @@ public class GameActivity extends AppCompatActivity {
         refresh = findViewById(R.id.refresh);
         tvbringGold = findViewById(R.id.bringGold);
 
+
         introGame.setVisibility(View.VISIBLE);
         inGame.setVisibility(View.GONE);
+
+        voteLayout.setVisibility(View.INVISIBLE);
 
     }
 
@@ -200,7 +203,7 @@ public class GameActivity extends AppCompatActivity {
 
                 tvUserNum.setText(Integer.toString(userNum) + " / 5");
 
-                if (userNum == 5) {
+                if (userNum == 2) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -240,10 +243,10 @@ public class GameActivity extends AppCompatActivity {
                         if (userID.equals(tempUID)) {
                             me = player;
                             me.setBringGold(bringGold);
-                            tvbringGold.setText(me.getBringGold());
                         }
                         playerList.add(player);
                     }
+
 
                     Comparator<PlayerData> comparator = new Comparator<PlayerData>() {
                         @Override
@@ -257,7 +260,7 @@ public class GameActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             playerAdapter.notifyDataSetChanged();
-
+                            tvbringGold.setText(Integer.toString(me.getBringGold()));
                             if(me.getOrder() == (int) args[1]) {
                                 sendOffer((int) args[1]);
                             }
@@ -274,13 +277,27 @@ public class GameActivity extends AppCompatActivity {
         Global.socket.on("offer_end", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                int myGold = (int) args[me.getOrder()+1];
+                JSONArray arr = (JSONArray) args[0];
+                int myGold = 0;
+                try {
+                    myGold = (int) arr.get(me.getOrder());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 me.setGold(myGold);
-                if (me.getState() == 1) { voteLayout.setVisibility(View.VISIBLE); }
+
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        if (me.getState() == 1) { voteLayout.setVisibility(View.VISIBLE); }
+                        else {
+                            PlayerData player;
+                            for(int i = 0; i < playerList.size(); i++) {
+                                player = playerList.get(i);
+                                player.setGold((int) args[player.getOrder()]);
+                            }
+                        }
                         playerAdapter.notifyDataSetChanged();
                     }
                 });
@@ -292,9 +309,33 @@ public class GameActivity extends AppCompatActivity {
         Global.socket.on("offer_accept", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
+                Log.d("GameEnd", "AAAAAAAAA");
                 Global.socket.emit("game_end", roomID, userID, bringGold);
             }
        });
+
+        Global.socket.on("dead", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                me.setState(0);
+                Global.socket.emit("dead", roomID, userID);
+            }
+        });
+
+        Global.socket.on("offer_reject", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                for(int i = 0; i < playerList.size(); i++) {
+                    if(playerList.get(i).getOrder() == (int) args[0] + 1) {
+                        playerList.get(i).setState(0);
+                    }
+                }
+
+                if(me.getOrder() == (int)args[0]) {
+                    sendOffer((int)args[0]);
+                }
+            }
+        });
 
         // 게임 종료 -> 소켓 disconnect
         Global.socket.on("game_end", new Emitter.Listener() {
@@ -328,12 +369,14 @@ public class GameActivity extends AppCompatActivity {
         EditText etG5, etG4,etG3, etG2, etG1;
         AppCompatButton btnConfirm;
 
-        etG5 = findViewById(R.id.o5_gold);
-        etG4 = findViewById(R.id.o4_gold);
-        etG3 = findViewById(R.id.o3_gold);
-        etG2 = findViewById(R.id.o2_gold);
-        etG1 = findViewById(R.id.o1_gold);
-        btnConfirm = findViewById(R.id.gdConfirm);
+        builder.setView(view);
+
+        etG5 = view.findViewById(R.id.o5_gold);
+        etG4 = view.findViewById(R.id.o4_gold);
+        etG3 = view.findViewById(R.id.o3_gold);
+        etG2 = view.findViewById(R.id.o2_gold);
+        etG1 = view.findViewById(R.id.o1_gold);
+        btnConfirm = view.findViewById(R.id.gdConfirm);
 
         builder.setCancelable(false);
 //        if(num>3) {
@@ -360,7 +403,7 @@ public class GameActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "입력한 금화의 합이 1000개가 아닙니다", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Global.socket.emit("offer", roomID, gold5, gold4, gold3, gold2, gold1);
+                    Global.socket.emit("offer", roomID, gold1, gold2, gold3, gold4, gold5);
                     dialog.dismiss();
                 }
 
@@ -373,7 +416,6 @@ public class GameActivity extends AppCompatActivity {
         }
 
         dialog.show();
-
 
     }
 }

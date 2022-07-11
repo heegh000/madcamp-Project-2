@@ -56,6 +56,10 @@ public class PlayerData {
         this.gold = gold;
     }
 
+    public void setState(int state) {
+        this.state = state;
+    }
+
     public void setVote(int vote) {
         this.vote = vote;
     }
