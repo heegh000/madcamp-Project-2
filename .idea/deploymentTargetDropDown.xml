@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="deploymentTargetDropDown">
-<<<<<<< HEAD
-    <runningDeviceTargetSelectedWithDropDown>
-      <Target>
-        <type value="RUNNING_DEVICE_TARGET" />
-        <deviceKey>
-          <Key>
-            <type value="SERIAL_NUMBER" />
-            <value value="R39M2097TQR" />
-          </Key>
-        </deviceKey>
-      </Target>
-    </runningDeviceTargetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-07-11T15:39:55.756125400Z" />
     <multipleDevicesSelectedInDropDown value="true" />
-=======
->>>>>>> 947b60709642a6608002d694ee4d0edec5d99965
     <runningDeviceTargetsSelectedWithDialog>
       <Target>
         <type value="RUNNING_DEVICE_TARGET" />

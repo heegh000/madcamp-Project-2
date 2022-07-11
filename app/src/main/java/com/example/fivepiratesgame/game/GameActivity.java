@@ -332,6 +332,8 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
 
+                me.setVote(-1);
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
