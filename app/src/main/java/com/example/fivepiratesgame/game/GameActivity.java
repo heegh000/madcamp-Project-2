@@ -62,6 +62,8 @@ public class GameActivity extends AppCompatActivity {
     private final long finishtimeed = 1000;
     private long presstime = 0;
 
+    boolean isEnd = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -303,8 +305,13 @@ public class GameActivity extends AppCompatActivity {
         Global.socket.on("offer_accept", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                Log.d("GameEnd", "AAAAAAAAA");
-                Global.socket.emit("game_end", roomID, userID, bringGold);
+                if(isEnd || me.getState() == 0) {
+                    Log.d("BBBBBBBBBBB", "BBBBBBBBBBBBBB");
+                } else  {
+                    isEnd = true;
+                    Log.d("AAAAAAAAAAAAAAa", Integer.toString(roomID));
+                    Global.socket.emit("game_end", roomID, userID, bringGold);
+                }
             }
        });
 
@@ -431,15 +438,15 @@ public class GameActivity extends AppCompatActivity {
                 }
                 else {
                     switch (num){
-                        case 3:
+                        case 2:
                             Global.socket.emit("offer", roomID, gold1, gold2, gold3);
-                            return;
+                            break;
                         case 4:
                             Global.socket.emit("offer", roomID, gold1, gold2, gold3, gold4);
-                            return;
+                            break;
                         case 5:
                             Global.socket.emit("offer", roomID, gold1, gold2, gold3, gold4, gold5);
-                            return;
+                            break;
                     }
                     dialog.dismiss();
                 }
@@ -452,7 +459,9 @@ public class GameActivity extends AppCompatActivity {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
         }
 
-        dialog.show();
+        if (!GameActivity.this.isFinishing()) {
+            dialog.show();
+        }
 
     }
 }
