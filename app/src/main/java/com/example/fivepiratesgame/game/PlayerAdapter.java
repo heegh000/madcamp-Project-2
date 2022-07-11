@@ -3,19 +3,19 @@ package com.example.fivepiratesgame.game;
 import static com.example.fivepiratesgame.MainActivity.mapAvatar;
 
 import android.content.Context;
-import android.util.Log;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.fivepiratesgame.Global;
 import com.example.fivepiratesgame.R;
-import com.example.fivepiratesgame.UserData;
 
 import java.util.List;
 
@@ -28,6 +28,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
         this.context = context;
         this.playerList = playerList;
     }
+
 
     @NonNull
     @Override
@@ -51,26 +52,18 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
             holder.tvGold.setText(Integer.toString(pData.getGold()) + " GOLD");
         }
 
+        if(holder.getState() == 0){
+            holder.player_layout.setBackgroundResource(R.color.transparent);
+            holder.ivGameProfile.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY);
+        }
+
         holder.ivMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-                if(holder.getHolderUID() == GameActivity.gameActivity.me.getUserID() && holder.getState() == 0 && GameActivity.gameActivity.me.getVote() != -1) {
-
-                }
-                else {
-                    int bringGold =0 ;
-                    String msg = "";
-
-                    //받아야함
-
-                    Global.socket.emit("msg", GameActivity.gameActivity.me.getRoomId(), holder.getHolderUID(), bringGold, msg);
-                }
+                showSendMsgDialog(holder.getHolderUID(), holder.getState());
             }
         });
     }
-
 
     @Override
     public int getItemCount() {
@@ -78,6 +71,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
     }
 
     public class PlayerViewHolder extends RecyclerView.ViewHolder {
+        protected LinearLayout player_layout;
         protected ImageView ivGameProfile;
         protected TextView tvOrder;
         protected TextView  tvNickname;
@@ -89,6 +83,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
 
         public PlayerViewHolder(@NonNull View itemView) {
             super(itemView);
+            this.player_layout = (LinearLayout) itemView.findViewById(R.id.rvPlayer_layout);
             this.tvOrder = (TextView) itemView.findViewById(R.id.tvOrder);
             this.ivGameProfile = (ImageView) itemView.findViewById(R.id.ivGameProfile);
             this.tvNickname = (TextView) itemView.findViewById(R.id.tvNickname);
