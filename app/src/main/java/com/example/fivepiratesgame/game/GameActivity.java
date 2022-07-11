@@ -341,6 +341,9 @@ public class GameActivity extends AppCompatActivity {
 
                 me.setVote(-1);
 
+                accept.setBackgroundResource(R.drawable.game_textbox);
+                reject.setBackgroundResource(R.drawable.game_textbox);
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
