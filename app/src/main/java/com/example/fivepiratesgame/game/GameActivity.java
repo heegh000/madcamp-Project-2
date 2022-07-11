@@ -7,39 +7,31 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fivepiratesgame.Global;
-import com.example.fivepiratesgame.MainActivity;
 import com.example.fivepiratesgame.R;
-import com.example.fivepiratesgame.UserData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 public class GameActivity extends AppCompatActivity {
@@ -317,10 +309,10 @@ public class GameActivity extends AppCompatActivity {
         //현재 자신의 order만큼 입력을 받고 배열로 만들어서 넘겨줘야함
         //사용자한테 입력 받아야함
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this, R.style.AlertDialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
 
         View view = LayoutInflater.from(GameActivity.this).inflate(
-                R.layout.gold_distribution, (LinearLayout)findViewById(R.id.gdDialog));
+                R.layout.dialog_gold_distribution, (LinearLayout)findViewById(R.id.gdDialog));
 
 //        TextView tvName5, tvName4, tvName3, tvName2, tvName1;
         TextView tvleftCoin;
