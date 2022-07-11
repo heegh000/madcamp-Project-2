@@ -60,7 +60,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_light1"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/avatar">
+        app:layout_constraintTop_toBottomOf="@id/avatar"
+        app:layout_constraintBottom_toTopOf="@id/playgame">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -127,6 +128,7 @@
         android:textAllCaps="false"
         android:textColor="#000"
         android:textSize="40dp"
+        app:layout_constraintBottom_toTopOf="@id/linearLayout"
         app:layout_constraintTop_toBottomOf="@+id/charInfo" />
 
     <LinearLayout
@@ -136,6 +138,7 @@
         android:layout_marginTop="15dp"
         android:orientation="horizontal"
         android:weightSum="1"
+        app:layout_constraintBottom_toTopOf="@id/logout"
         app:layout_constraintTop_toBottomOf="@+id/playgame">
 
         <TextView
@@ -168,16 +171,15 @@
         android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
         android:text="L o g  o u t"
         android:textColor="#095F87"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 
 

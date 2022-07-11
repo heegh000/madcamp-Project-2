@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:paddingHorizontal="20dp"
-            android:text="비상금을 챙겨가시겠습니까? \n * 비상금은 거래를 위해 사용할 수 있으며, 거래 실패 시 영구 소멸합니다."
+            android:text="비상금을 챙겨가시겠습니까?\n * 비상금은 거래를 위해 사용할 수 있으며, 거래 실패 시 영구 소멸합니다.\n * 최대 200금화"
             android:textStyle="bold"
             android:fontFamily="@font/wild"
             android:textSize="24sp"/>
