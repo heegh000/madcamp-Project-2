@@ -383,6 +383,13 @@ public class GameActivity extends AppCompatActivity {
                 int gold2 = Integer.parseInt(etG2.getText().toString());
                 int gold1 = Integer.parseInt(etG1.getText().toString());
 
+                if(etG5.getText().equals("")) { gold5 = 0; }
+                if(etG4.getText().equals("")) { gold4 = 0; }
+                if(etG3.getText().equals("")) { gold3 = 0; }
+                if(etG2.getText().equals("")) { gold2 = 0; }
+                if(etG1.getText().equals("")) { gold1 = 0; }
+
+
                 int total = gold5 + gold4 + gold3 + gold2 + gold1;
 
                 if (total != 1000){
