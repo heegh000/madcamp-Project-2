@@ -292,7 +292,14 @@ public class GameActivity extends AppCompatActivity {
                             PlayerData player;
                             for(int i = 0; i < playerList.size(); i++) {
                                 player = playerList.get(i);
-                                player.setGold((int) args[player.getOrder()]);
+                                if(player.getState() == 1) {
+                                    try {
+                                        player.setGold((int) arr.get(player.getOrder()));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
                             }
                         }
                         playerAdapter.notifyDataSetChanged();
