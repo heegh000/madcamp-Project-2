@@ -47,13 +47,12 @@ public class GameActivity extends AppCompatActivity {
     private TextView tvName, tvbringGold, reject, accept;
     private ImageView avatar, refresh;
 
-    private PlayerData me;
 
     private String userID;
     private String nickname;
     private int avatarID;
-    private int bringGold;
     private int roomID;
+    private int bringGold;
 
     ConstraintLayout introGame;
     ConstraintLayout inGame;
@@ -66,10 +65,15 @@ public class GameActivity extends AppCompatActivity {
     boolean isEnd = false;
 
 
+    public PlayerData me;
+    public static GameActivity gameActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        gameActivity = this;
 
         initGame();
         socket();
@@ -127,6 +131,7 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        gameActivity = null;
         Global.socket.disconnect();
         super.onDestroy();
     }
@@ -149,7 +154,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void initGame() {
         playerList = new ArrayList<>();
-        playerAdapter = new PlayerAdapter(this, playerList);
+        playerAdapter = new PlayerAdapter(GameActivity.this, playerList);
         rvPlayer = (RecyclerView) findViewById(R.id.rvPlayer);
         rvPlayer.setLayoutManager(new LinearLayoutManager(this));
         rvPlayer.setAdapter(playerAdapter);
@@ -239,6 +244,7 @@ public class GameActivity extends AppCompatActivity {
                         PlayerData player = new PlayerData(tempUID, tempName, tempAID, tempOrder);
                         if (userID.equals(tempUID)) {
                             me = player;
+                            me.setRoomId(roomID);
                             me.setBringGold(bringGold);
                         }
                         playerList.add(player);
@@ -299,6 +305,9 @@ public class GameActivity extends AppCompatActivity {
                                         e.printStackTrace();
                                     }
                                 }
+                                else {
+                                    player.setGold(-1);
+                                }
 
                             }
                         }
@@ -327,6 +336,7 @@ public class GameActivity extends AppCompatActivity {
             public void call(Object... args) {
                 me.setState(0);
                 Global.socket.emit("dead", roomID, userID);
+                voteLayout.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -363,6 +373,22 @@ public class GameActivity extends AppCompatActivity {
                 // 종료 화면?
             }
         });
+
+        Global.socket.on("msg", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+
+            }
+        });
+
+        Global.socket.on("dilemma", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                if(me.getGet)
+            }
+        });
+
+        Global.socket.on("")
 
         Global.socket.connect();
 
