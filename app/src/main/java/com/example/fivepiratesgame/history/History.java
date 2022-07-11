@@ -45,7 +45,7 @@ public class History extends AppCompatActivity {
         initRetrofit();
         initHistory();
 
-        getHistory(userID);
+        getHistory();
 
         goback = findViewById(R.id.goback);
         goback.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +67,7 @@ public class History extends AppCompatActivity {
 
     private void initHistory() {
         Intent intent = getIntent();
-        userID = intent.getStringExtra("usreID");
+        userID = intent.getStringExtra("userID");
 
         historyList = new ArrayList<>();
         historyAdapter = new HistoryAdapter(this, (List<HistoryData>) historyList);
@@ -76,7 +76,7 @@ public class History extends AppCompatActivity {
         rvHistory.setAdapter(historyAdapter);
     }
 
-    private void getHistory(String userID) {
+    private void getHistory() {
         service.getHistory(userID).enqueue(new Callback<List<HistoryData>>() {
             @Override
             public void onResponse(Call<List<HistoryData>> call, Response<List<HistoryData>> response) {
