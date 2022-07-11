@@ -18,14 +18,10 @@ import com.example.fivepiratesgame.game.GameActivity;
 import com.example.fivepiratesgame.history.History;
 import com.example.fivepiratesgame.login.LoginIntro;
 import com.example.fivepiratesgame.ranking.Ranking;
-import com.github.nkzawa.emitter.Emitter;
-import com.github.nkzawa.socketio.client.IO;
-import com.github.nkzawa.socketio.client.Socket;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 
-import java.net.URISyntaxException;
 import java.util.HashMap;
 
 import retrofit2.Call;
@@ -57,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
     private RetrofitService service;
 
     private int bringGold = 0;
+
+    private final long finishtimeed = 1000;
+    private long presstime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
                         });
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
             }
         });
 
@@ -219,6 +217,22 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson)).build();
         service = retrofit.create(RetrofitService.class);
+    }
+
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - presstime;
+
+        if (0 <= intervalTime && finishtimeed >= intervalTime)
+        {
+            finish();
+        }
+        else
+        {
+            presstime = tempTime;
+            Toast.makeText(getApplicationContext(), "한번더 누르시면 앱이 종료됩니다", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

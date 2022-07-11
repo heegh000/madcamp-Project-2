@@ -16,6 +16,11 @@ public class UserData {
     @SerializedName("rank")
     private String rank;
 
+    public UserData(String nickname, String avatarID) {
+        this.nickname = nickname;
+        this.avatarID = avatarID;
+    }
+
     public String getRank() {
         return rank;
     }

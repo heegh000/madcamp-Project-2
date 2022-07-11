@@ -28,7 +28,6 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class Ranking extends AppCompatActivity {
 
     private List<UserData> rankingList;
-
     private RankingAdapter rankAdapter;
     private RecyclerView rvRanking;
 

@@ -13,4 +13,6 @@
     <color name="deep3">#064663</color>
     <color name="deep4">#01747A</color>
     <color name="light1">#ECB365</color>
+
+    <color name="transparent">#00000000</color>
 </resources>
