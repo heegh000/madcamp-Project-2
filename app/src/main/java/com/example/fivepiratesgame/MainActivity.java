@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fivepiratesgame.game.GameActivity;
-import com.example.fivepiratesgame.game.GameIntro;
 import com.example.fivepiratesgame.history.History;
 import com.example.fivepiratesgame.login.LoginIntro;
 import com.example.fivepiratesgame.ranking.Ranking;
@@ -23,7 +22,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 
-import java.net.URISyntaxException;
 import java.util.HashMap;
 
 import retrofit2.Call;
@@ -117,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 Log.d("bringGold", String.valueOf(bringGold));
 
-                                startActivity(new Intent(getApplicationContext(), GameIntro.class)
+                                startActivity(new Intent(getApplicationContext(), GameActivity.class)
                                         .putExtra("userID", userID)
                                         .putExtra("nickname", nickname)
                                         .putExtra("avatarID", avatarID)

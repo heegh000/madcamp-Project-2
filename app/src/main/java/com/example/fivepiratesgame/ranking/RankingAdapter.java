@@ -45,6 +45,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingV
         holder.tvRank.setText(Integer.toString(position+1));
         holder.tvNickname.setText(uData.getNickname());
         holder.tvGold.setText(uData.getGold());
+
     }
 
     @Override
