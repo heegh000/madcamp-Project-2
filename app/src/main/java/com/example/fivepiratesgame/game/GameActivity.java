@@ -381,6 +381,15 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        Global.socket.on("dilemma", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                if(me.getGet)
+            }
+        });
+
+        Global.socket.on("")
+
         Global.socket.connect();
 
         Global.socket.emit("join", userID, bringGold);
