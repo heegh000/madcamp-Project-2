@@ -39,12 +39,12 @@ public class MainActivity extends AppCompatActivity {
     public static HashMap<Integer, Integer> mapAvatar = new HashMap<Integer, Integer>(){{
         put(0, R.drawable.bulbasaur);
         put(1, R.drawable.charmander);
-        put(2, R.drawable.egg);
+        put(2, R.drawable.squirtle);
         put(3, R.drawable.jigglypuff);
         put(4, R.drawable.meowth);
         put(5, R.drawable.pikachu);
         put(6, R.drawable.snorlex);
-        put(7, R.drawable.squirtle);
+        put(7, R.drawable.egg);
     }};
 
     private String userID, nickname, gold;

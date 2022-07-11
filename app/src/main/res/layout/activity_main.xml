@@ -85,6 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:fontFamily="@font/xbones"
+                android:gravity="center"
                 android:text="1"
                 android:textSize="30dp" />
         </LinearLayout>
@@ -111,6 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:fontFamily="@font/xbones"
+                android:gravity="center"
                 android:text="300"
                 android:textSize="30dp" />
 

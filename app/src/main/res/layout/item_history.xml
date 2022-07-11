@@ -17,10 +17,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
+        android:fontFamily="@font/xbones"
         android:text="date"
-        android:textSize="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="60dp"/>
+        android:textSize="24dp"
+        android:layout_marginLeft="20dp" />
 
     <TextView
         android:id="@+id/tvResult"
@@ -29,6 +29,6 @@
         android:gravity="center"
         android:fontFamily="@font/xbones"
         android:text="result"
-        android:textSize="20dp"
-        android:layout_marginLeft="30dp"/>
+        android:textSize="24dp"
+        android:layout_marginLeft="40dp"/>
 </LinearLayout>
