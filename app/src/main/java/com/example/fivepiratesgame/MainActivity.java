@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "현재 보유 금화보다 많은 금화를 가져갈 수 없습니다", Toast.LENGTH_LONG).show();
                     bringGold = 0;
                 }
-                if (Integer.parseInt(gold) > 200) {
+                if (bringGold > 200) {
                     Toast.makeText(getApplicationContext(), "200금화를 초과하여 가져갈 수 없습니다", Toast.LENGTH_LONG).show();
                     bringGold = 0;
                 }
