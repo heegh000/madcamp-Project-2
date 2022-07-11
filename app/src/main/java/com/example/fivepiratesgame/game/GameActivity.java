@@ -477,7 +477,7 @@ public class GameActivity extends AppCompatActivity {
                 }
                 else {
                     switch (num){
-                        case 2:
+                        case 3:
                             Global.socket.emit("offer", roomID, gold1, gold2, gold3);
                             break;
                         case 4:
