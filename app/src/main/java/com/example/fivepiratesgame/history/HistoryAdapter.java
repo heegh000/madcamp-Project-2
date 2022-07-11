@@ -39,7 +39,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
 
         holder.tvDate.setText(hisData.getTime());
-        holder.tvResult.setText(hisData.getResult());
+        holder.tvResult.setText(hisData.getResult()); //사망 띄우기!
     }
 
     @Override

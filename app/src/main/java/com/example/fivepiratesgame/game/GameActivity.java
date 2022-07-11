@@ -1,26 +1,36 @@
 package com.example.fivepiratesgame.game;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fivepiratesgame.Global;
+import com.example.fivepiratesgame.MainActivity;
 import com.example.fivepiratesgame.R;
 import com.example.fivepiratesgame.UserData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,8 +47,10 @@ public class GameActivity extends AppCompatActivity {
     private PlayerAdapter playerAdapter;
     private RecyclerView rvPlayer;
 
+    private LinearLayout voteLayout;
+
     private TextView tvName, tvbringGold, reject, accept;
-    private ImageView avatar;
+    private ImageView avatar, refresh;
 
     private PlayerData me;
 
@@ -69,11 +81,13 @@ public class GameActivity extends AppCompatActivity {
         reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(me.getVote() != -1) {
+                if(me.getVote() == -1) {
                     me.setVote(0);
-                    Global.socket.emit("vote", roomID, 0, false);
+                    Global.socket.emit("vote", roomID, 0);
+                    reject.setBackgroundResource(R.drawable.game_reject);
                 }
                 //투표를 했을때 다시 버튼을 누르면 어떻게 할지 정해야함
+                //3초 후 refresh
                 else {
                     //만약 같은 버튼을 또 누르면 무시
                     //다른 버튼을 누르는 상황은 처리해야함
@@ -85,15 +99,32 @@ public class GameActivity extends AppCompatActivity {
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(me.getVote() != -1) {
+                if(me.getVote() == -1) {
                     me.setVote(1);
-                    Global.socket.emit("vote", roomID, 1, false);
+                    Global.socket.emit("vote", roomID, 1);
+                    accept.setBackgroundResource(R.drawable.game_accept);
                 }
                 //투표를 했을때 다시 버튼을 누르면 어떻게 할지 정해야함
                 else {
                 }
             }
         });
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(me.getVote() != -1) {
+                    Global.socket.emit("refresh", roomID, me.getVote());
+                    me.setVote(-1);
+
+                    accept.setBackgroundResource(R.drawable.game_textbox);
+                    reject.setBackgroundResource(R.drawable.game_textbox);
+                }
+                //투표를 했을때 다시 버튼을 누르면 어떻게 할지 정해야함
+                else {
+                }
+            }
+        });
+
 
     }
 
@@ -136,8 +167,11 @@ public class GameActivity extends AppCompatActivity {
         introGame = findViewById(R.id.introGame);
         inGame = findViewById(R.id.inGame);
         tvUserNum = findViewById(R.id.tvUserNum);
+        voteLayout = findViewById(R.id.voteLayout);
         reject = findViewById(R.id.reject);
         accept = findViewById(R.id.accept);
+        refresh = findViewById(R.id.refresh);
+        tvbringGold = findViewById(R.id.bringGold);
 
         introGame.setVisibility(View.VISIBLE);
         inGame.setVisibility(View.GONE);
@@ -206,6 +240,7 @@ public class GameActivity extends AppCompatActivity {
                         if (userID.equals(tempUID)) {
                             me = player;
                             me.setBringGold(bringGold);
+                            tvbringGold.setText(me.getBringGold());
                         }
                         playerList.add(player);
                     }
@@ -241,6 +276,7 @@ public class GameActivity extends AppCompatActivity {
             public void call(Object... args) {
                 int myGold = (int) args[me.getOrder()+1];
                 me.setGold(myGold);
+                if (me.getState() == 1) { voteLayout.setVisibility(View.VISIBLE); }
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -279,12 +315,65 @@ public class GameActivity extends AppCompatActivity {
 
         //현재 자신의 order만큼 입력을 받고 배열로 만들어서 넘겨줘야함
         //사용자한테 입력 받아야함
-        int gold1 = 100;
-        int gold2 = 100;
-        int gold3 = 200;
-        int gold4 = 250;
-        int gold5 = 350;
+//        int gold5, gold4, gold3, gold2, gold1;
+//        int total = 1000;
 
-        Global.socket.emit("offer", roomID, gold1, gold2, gold3, gold4, gold5);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this, R.style.AlertDialogTheme);
+
+        View view = LayoutInflater.from(GameActivity.this).inflate(
+                R.layout.gold_distribution, (LinearLayout)findViewById(R.id.gdDialog));
+
+        TextView tvName5, tvName4, tvName3, tvName2, tvName1;
+        EditText etG5, etG4,etG3, etG2, etG1;
+        AppCompatButton btnConfirm;
+
+        etG5 = findViewById(R.id.o5_gold);
+        etG4 = findViewById(R.id.o4_gold);
+        etG3 = findViewById(R.id.o3_gold);
+        etG2 = findViewById(R.id.o2_gold);
+        etG1 = findViewById(R.id.o1_gold);
+        btnConfirm = findViewById(R.id.gdConfirm);
+
+        builder.setCancelable(false);
+//        if(num>3) {
+//            ((LinearLayout)view.findViewById(R.id.o4_layout)).setVisibility(View.VISIBLE);
+//        }
+//        if(num>4) {
+//            ((LinearLayout)view.findViewById(R.id.o5_layout)).setVisibility(View.VISIBLE);
+//        }
+
+        AlertDialog dialog = builder.create();
+
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int gold5 = Integer.parseInt(etG5.getText().toString());
+                int gold4 = Integer.parseInt(etG4.getText().toString());
+                int gold3 = Integer.parseInt(etG3.getText().toString());
+                int gold2 = Integer.parseInt(etG2.getText().toString());
+                int gold1 = Integer.parseInt(etG1.getText().toString());
+
+                int total = gold5 + gold4 + gold3 + gold2 + gold1;
+
+                if (total != 1000){
+                    Toast.makeText(getApplicationContext(), "입력한 금화의 합이 1000개가 아닙니다", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Global.socket.emit("offer", roomID, gold5, gold4, gold3, gold2, gold1);
+                    dialog.dismiss();
+                }
+
+            }
+        });
+
+        // Dialog 형태 지우기?
+        if(dialog.getWindow() != null){
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        dialog.show();
+
+
     }
 }

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gdDialog"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="20dp"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:id="@+id/gd_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/gd_bg"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gd_title"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:text="금화 배분"
+            android:fontFamily="@font/wild"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="20dp"
+            android:text="당신이 서열 1위입니다. 금화 1000개를 배분하고 생존하여 최대한의 금화를 가져가세요."
+            android:textStyle="bold"
+            android:fontFamily="@font/wild"
+            android:textSize="24sp"/>
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:paddingHorizontal="20dp"-->
+<!--            android:text="남은 금화 :"-->
+<!--            android:textStyle="bold"-->
+<!--            android:fontFamily="@font/wild"-->
+<!--            android:textSize="24sp"/>-->
+
+        <LinearLayout
+            android:id="@+id/o5_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/o5_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order5"
+                android:paddingHorizontal="20dp"
+                android:textSize="24sp"
+                android:fontFamily="@font/wild"/>
+            <EditText
+                android:id="@+id/o5_gold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="24sp"
+                android:fontFamily="@font/wild"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/o4_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/o4_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order4"
+                android:paddingHorizontal="20dp"
+                android:textSize="24sp"
+                android:fontFamily="@font/wild"/>
+            <EditText
+                android:id="@+id/o4_gold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="24sp"
+                android:fontFamily="@font/wild"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/o3_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/o3_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order3"
+                android:paddingHorizontal="20dp"
+                android:textSize="24sp"
+                android:fontFamily="@font/wild"/>
+            <EditText
+                android:id="@+id/o3_gold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="24sp"
+                android:fontFamily="@font/wild"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/o2_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:id="@+id/o2_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order2"
+                android:paddingHorizontal="20dp"
+                android:textSize="24sp"
+                android:fontFamily="@font/wild"/>
+            <EditText
+                android:id="@+id/o2_gold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="24sp"
+                android:fontFamily="@font/wild"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/o1_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/o1_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order1"
+                android:paddingHorizontal="20dp"
+                android:textSize="24sp"
+                android:fontFamily="@font/wild"/>
+            <EditText
+                android:id="@+id/o1_gold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="24sp"
+                android:fontFamily="@font/wild"/>
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/gdConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirm"
+            android:textColor="@color/white"
+            android:background="@drawable/gd_confirm"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

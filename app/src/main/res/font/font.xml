@@ -7,5 +7,7 @@
         android:font="@font/xbones"/>
     <font android:fontStyle="normal"
         android:font="@font/xbonesbold"/>
+    <font android:fontStyle="normal"
+        android:font="@font/wild"/>
 
 </font-family>

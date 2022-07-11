@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/drawable/character_bg.xml" value="0.135" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/drawable/enter.xml" value="0.1" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/drawable/enteridpw.xml" value="0.1675" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/drawable/game_reject.xml" value="0.23" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/drawable/game_textbox.xml" value="0.2305" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/drawable/game_vote.xml" value="0.2305" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/drawable/gd_bg.xml" value="0.2305" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/drawable/gd_title.xml" value="0.2305" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/drawable/gold_distribution.xml" value="0.2305" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/drawable/rounded_corner.xml" value="0.1675" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/drawable/rounded_corner_google.xml" value="0.2305" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/drawable/rounded_deep1.xml" value="0.2015" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/drawable/rounded_light1.xml" value="0.2015" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/font/font.xml" value="0.3425925925925926" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout-w1240dp/activity_local_login.xml" value="0.18984375" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout-w936dp/activity_local_login.xml" value="0.274609375" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/activity_customize_character.xml" value="0.2" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/activity_game.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/activity_game_init.xml" value="0.1" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/activity_game_intro.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/activity_history.xml" value="0.3265822784810127" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/activity_intro.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/activity_local_login.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/activity_login.xml" value="0.2853470437017995" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/activity_login_local.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/activity_ranking.xml" value="0.25" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/activity_register.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/content_history.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/fragment_first.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/fragment_second.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/gold_distribution.xml" value="0.25" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/item_history.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/item_player.xml" value="0.25" />
+        <entry key="..\:/Users/bless/AndroidStudioProjects/fivePiratesGame/app/src/main/res/layout/item_ranking.xml" value="0.23802083333333332" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
