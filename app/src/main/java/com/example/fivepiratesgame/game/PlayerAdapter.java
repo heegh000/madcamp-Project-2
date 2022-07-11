@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fivepiratesgame.Global;
 import com.example.fivepiratesgame.R;
 import com.example.fivepiratesgame.UserData;
 
@@ -44,10 +45,30 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
         holder.tvOrder.setText(Integer.toString(pData.getOrder()));
         holder.ivGameProfile.setImageResource(mapAvatar.get(pData.getAvatarID()));
         holder.tvNickname.setText(pData.getNickname());
+        holder.setIDState(pData.getUserID(), pData.getState());
 
         if(pData.getGold() != -1) {
             holder.tvGold.setText(Integer.toString(pData.getGold()) + " GOLD");
         }
+
+        holder.ivMsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                if(holder.getHolderUID() == GameActivity.gameActivity.me.getUserID() && holder.getState() == 0 && GameActivity.gameActivity.me.getVote() != -1) {
+
+                }
+                else {
+                    int bringGold =0 ;
+                    String msg = "";
+
+                    //받아야함
+
+                    Global.socket.emit("msg", GameActivity.gameActivity.me.getRoomId(), holder.getHolderUID(), bringGold, msg);
+                }
+            }
+        });
     }
 
 
@@ -61,6 +82,10 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
         protected TextView tvOrder;
         protected TextView  tvNickname;
         protected TextView  tvGold;
+        protected ImageView ivMsg;
+
+        private String holderUID;
+        private int state;
 
         public PlayerViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -68,6 +93,20 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
             this.ivGameProfile = (ImageView) itemView.findViewById(R.id.ivGameProfile);
             this.tvNickname = (TextView) itemView.findViewById(R.id.tvNickname);
             this.tvGold = (TextView) itemView.findViewById(R.id.tvGold);
+            this.ivMsg = (ImageView) itemView.findViewById(R.id.ivMsg);
+        }
+
+        public void setIDState(String holderUID, int state) {
+            this.holderUID = holderUID;
+            this.state = state;
+        }
+
+        public String getHolderUID() {
+            return holderUID;
+        }
+
+        public int getState() {
+            return state;
         }
     }
 }

@@ -64,6 +64,10 @@ public class PlayerData {
         this.vote = vote;
     }
 
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
+    }
+
     public PlayerData(String userID, String nickname, int avatarID, int order) {
         this.userID = userID;
         this.nickname = nickname;
