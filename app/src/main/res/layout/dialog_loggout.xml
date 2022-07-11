@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:weightSum="1"
-            android:background="@drawable/out_cnfirm"
+            android:background="@drawable/out_confirm"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatButton

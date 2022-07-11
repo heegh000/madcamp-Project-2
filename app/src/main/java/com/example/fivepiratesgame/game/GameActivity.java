@@ -199,7 +199,7 @@ public class GameActivity extends AppCompatActivity {
 
                 tvUserNum.setText(Integer.toString(userNum) + " / 5");
 
-                if (userNum == 2) {
+                if (userNum == 5) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -305,11 +305,10 @@ public class GameActivity extends AppCompatActivity {
         Global.socket.on("offer_accept", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                if(isEnd || me.getState() == 0) {
-                    Log.d("BBBBBBBBBBB", "BBBBBBBBBBBBBB");
-                } else  {
-                    isEnd = true;
-                    Log.d("AAAAAAAAAAAAAAa", Integer.toString(roomID));
+                if(me.getState() == 0) {
+
+                }
+                else  {
                     Global.socket.emit("game_end", roomID, userID, bringGold);
                 }
             }
@@ -343,7 +342,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void call(Object... args) {
                 Global.socket.emit("disconnect_req", roomID, userID);
-
+                // 종료 화면?
             }
         });
 
