@@ -102,8 +102,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 showBringGoldDialog(gold);
 
-
-
             }
         });
 
@@ -125,30 +123,7 @@ public class MainActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setCancelable(true);
-                builder.setTitle("Log out");
-                builder.setMessage("Are you sure?");
-
-                builder.setPositiveButton("Confirm",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent intent = new Intent(getApplicationContext(), LoginIntro.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                Toast.makeText(getApplicationContext(), "Logged out", Toast.LENGTH_LONG).show();
-                                finish();
-                            }
-                        });
-                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {}
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
+                showLogoutDialog();
             }
         });
     }
@@ -232,10 +207,19 @@ public class MainActivity extends AppCompatActivity {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bringGold = Integer.parseInt(etBringGold.getText().toString());
+                if(etBringGold.getText().equals("")) {
+                    bringGold = 0;
+                }
+                else {
+                    bringGold = Integer.parseInt(etBringGold.getText().toString());
+                }
 
                 if (Integer.parseInt(gold) < bringGold) {
                     Toast.makeText(getApplicationContext(), "현재 보유 금화보다 많은 금화를 가져갈 수 없습니다", Toast.LENGTH_LONG).show();
+                    bringGold = 0;
+                }
+                if (Integer.parseInt(gold) > 200) {
+                    Toast.makeText(getApplicationContext(), "200금화를 초과하여 가져갈 수 없습니다", Toast.LENGTH_LONG).show();
                     bringGold = 0;
                 }
                 dialog.dismiss();
@@ -255,5 +239,53 @@ public class MainActivity extends AppCompatActivity {
 
         dialog.show();
 
+    }
+
+    private void showLogoutDialog(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+        View view = LayoutInflater.from(MainActivity.this).inflate(
+                R.layout.dialog_loggout, (LinearLayout)findViewById(R.id.outDialog));
+
+        AppCompatButton btnReject, btnConfirm;
+
+        builder.setView(view);
+
+        btnConfirm = view.findViewById(R.id.outConfirm);
+        btnReject= view.findViewById(R.id.outReject);
+
+        AlertDialog dialog = builder.create();
+
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getApplicationContext(), LoginIntro.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                Toast.makeText(getApplicationContext(), "Logged out", Toast.LENGTH_LONG).show();
+                finish();
+
+                dialog.dismiss();
+
+            }
+        });
+
+        btnReject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+
+
+        // Dialog 형태 지우기
+        if(dialog.getWindow() != null){
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        dialog.show();
     }
 }

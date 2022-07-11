@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/outDialog"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="30dp"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:id="@+id/gd_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gd_title"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:text="Log out"
+            android:fontFamily="@font/xbones"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="50dp"
+            android:layout_gravity="center"
+            android:text="Are you sure?"
+            android:textStyle="bold"
+            android:fontFamily="@font/xbones"
+            android:textSize="24sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:weightSum="1"
+            android:background="@drawable/out_cnfirm"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/outReject"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"
+                android:fontFamily="@font/xbones"
+                android:textSize="24dp"
+                android:layout_weight="0.5"
+                android:textColor="@color/white"
+                android:layout_margin="1dp"
+                android:background="@drawable/out_confirm"
+                android:layout_gravity="center"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/outConfirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
+                android:fontFamily="@font/xbones"
+                android:textSize="24dp"
+                android:layout_weight="0.5"
+                android:textColor="@color/white"
+                android:background="@drawable/out_confirm"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
