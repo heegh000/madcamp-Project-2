@@ -29,8 +29,8 @@
 
             <ImageView
                 android:id="@+id/ivGameProfile"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
                 android:scaleType="centerCrop"
                 android:src="@drawable/pikachu" />
@@ -50,7 +50,7 @@
 
     <TextView
         android:id="@+id/tvGold"
-        android:layout_width="100dp"
+        android:layout_width="130dp"
         android:layout_height="match_parent"
         android:fontFamily="@font/xbones"
         android:gravity="center"
