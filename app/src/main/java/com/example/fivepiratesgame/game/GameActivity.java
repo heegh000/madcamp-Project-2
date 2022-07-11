@@ -7,38 +7,32 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fivepiratesgame.Global;
-import com.example.fivepiratesgame.MainActivity;
 import com.example.fivepiratesgame.R;
-import com.example.fivepiratesgame.UserData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 public class GameActivity extends AppCompatActivity {
@@ -356,20 +350,22 @@ public class GameActivity extends AppCompatActivity {
 
         //현재 자신의 order만큼 입력을 받고 배열로 만들어서 넘겨줘야함
         //사용자한테 입력 받아야함
-//        int gold5, gold4, gold3, gold2, gold1;
-//        int total = 1000;
 
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this, R.style.AlertDialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
 
         View view = LayoutInflater.from(GameActivity.this).inflate(
-                R.layout.gold_distribution, (LinearLayout)findViewById(R.id.gdDialog));
+                R.layout.dialog_gold_distribution, (LinearLayout)findViewById(R.id.gdDialog));
 
-        TextView tvName5, tvName4, tvName3, tvName2, tvName1;
+//        TextView tvName5, tvName4, tvName3, tvName2, tvName1;
+        TextView tvleftCoin;
         EditText etG5, etG4,etG3, etG2, etG1;
         AppCompatButton btnConfirm;
 
+        int leftCoin = 1000;
         builder.setView(view);
+
+        tvleftCoin = view.findViewById(R.id.leftCoin);
+        tvleftCoin.setText(String.valueOf(leftCoin));
 
         etG5 = view.findViewById(R.id.o5_gold);
         etG4 = view.findViewById(R.id.o4_gold);
@@ -378,19 +374,50 @@ public class GameActivity extends AppCompatActivity {
         etG1 = view.findViewById(R.id.o1_gold);
         btnConfirm = view.findViewById(R.id.gdConfirm);
 
-        builder.setCancelable(false);
-//        if(num>3) {
-//            ((LinearLayout)view.findViewById(R.id.o4_layout)).setVisibility(View.VISIBLE);
-//        }
-//        if(num>4) {
-//            ((LinearLayout)view.findViewById(R.id.o5_layout)).setVisibility(View.VISIBLE);
-//        }
+        if(num<4) {
+            ((LinearLayout)view.findViewById(R.id.o4_layout)).setVisibility(View.GONE);
+        }
+        if(num<5) {
+            ((LinearLayout)view.findViewById(R.id.o5_layout)).setVisibility(View.GONE);
+        }
 
         AlertDialog dialog = builder.create();
+
+        TextWatcher afterTextChangedListener = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // ignore
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // ignore
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                int gold5 = Integer.parseInt(etG5.getText().toString());
+                int gold4 = Integer.parseInt(etG4.getText().toString());
+                int gold3 = Integer.parseInt(etG3.getText().toString());
+                int gold2 = Integer.parseInt(etG2.getText().toString());
+                int gold1 = Integer.parseInt(etG1.getText().toString());
+
+                int total = gold5 + gold4 + gold3 + gold2 + gold1;
+                tvleftCoin.setText(String.valueOf(1000-total));
+
+            }
+        };
+        etG5.addTextChangedListener(afterTextChangedListener);
+        etG4.addTextChangedListener(afterTextChangedListener);
+        etG3.addTextChangedListener(afterTextChangedListener);
+        etG2.addTextChangedListener(afterTextChangedListener);
+        etG1.addTextChangedListener(afterTextChangedListener);
+
 
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 int gold5 = Integer.parseInt(etG5.getText().toString());
                 int gold4 = Integer.parseInt(etG4.getText().toString());
                 int gold3 = Integer.parseInt(etG3.getText().toString());
@@ -403,14 +430,24 @@ public class GameActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "입력한 금화의 합이 1000개가 아닙니다", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Global.socket.emit("offer", roomID, gold1, gold2, gold3, gold4, gold5);
+                    switch (num){
+                        case 3:
+                            Global.socket.emit("offer", roomID, gold1, gold2, gold3);
+                            return;
+                        case 4:
+                            Global.socket.emit("offer", roomID, gold1, gold2, gold3, gold4);
+                            return;
+                        case 5:
+                            Global.socket.emit("offer", roomID, gold1, gold2, gold3, gold4, gold5);
+                            return;
+                    }
                     dialog.dismiss();
                 }
-
             }
         });
 
-        // Dialog 형태 지우기?
+
+        // Dialog 형태 지우기
         if(dialog.getWindow() != null){
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
         }

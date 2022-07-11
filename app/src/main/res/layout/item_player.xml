@@ -4,8 +4,7 @@
     android:background="@drawable/game_textbox"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:weightSum="1"
-    android:padding="10dp"
+    android:gravity="center"
     android:orientation="horizontal">
 
     <TextView
@@ -14,17 +13,15 @@
         android:layout_height="match_parent"
         android:fontFamily="@font/xbonesbold"
         android:gravity="center"
-        android:layout_weight="0.1"
         android:text="order"
         android:textSize="20dp" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="32dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="1dp"
-        app:cardBackgroundColor="@color/transparent"
-        android:layout_weight="0.4">
+        app:cardBackgroundColor="@color/transparent">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -35,7 +32,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:src="@drawable/pikachu" />
 
             <TextView
@@ -53,10 +50,8 @@
 
     <TextView
         android:id="@+id/tvGold"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="30dp"
-        android:layout_weight="0.4"
         android:fontFamily="@font/xbones"
         android:gravity="center"
         android:text="gold"
@@ -68,7 +63,6 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:padding="10dp"
-        android:layout_weight="0.1"
         android:src="@drawable/ic_msg" />
 
 

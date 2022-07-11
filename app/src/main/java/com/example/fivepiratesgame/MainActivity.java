@@ -6,11 +6,14 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         put(7, R.drawable.squirtle);
     }};
 
-    private String userID;
+    private String userID, nickname, gold;
 
     private TextView tvName, tvID, history, ranking, tvRank, tvGold;
     private ImageView avatar;
@@ -53,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private RetrofitService service;
 
     private int bringGold = 0;
+    private int avatarID = 0;
 
     private final long finishtimeed = 1000;
     private long presstime = 0;
@@ -80,10 +84,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         userID = intent.getStringExtra("userID");
-        String nickname = intent.getStringExtra("nickname");
-        int avatarID = intent.getIntExtra("avatarID", 2);
+        nickname = intent.getStringExtra("nickname");
+        avatarID = intent.getIntExtra("avatarID", 2);
+        gold = intent.getStringExtra("gold");
         String rank = intent.getStringExtra("rank");
-        String gold = intent.getStringExtra("gold");
 
 
         tvName.setText(nickname);
@@ -96,39 +100,10 @@ public class MainActivity extends AppCompatActivity {
         playgame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                showBringGoldDialog(gold);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setCancelable(true);
-                builder.setTitle("비상금을 챙겨가시겠습니까?");
-                builder.setMessage("현재 보유 금화 : "+ gold);
 
-                final EditText et_bringGold = new EditText(MainActivity.this);
-                builder.setView(et_bringGold);
 
-                builder.setPositiveButton("Yes",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                bringGold = Integer.parseInt(et_bringGold.getText().toString());
-
-                                if (Integer.parseInt(gold) < bringGold) {
-                                    Toast.makeText(getApplicationContext(), "현재 보유 금화보다 많은 금화를 가져갈 수 없습니다", Toast.LENGTH_LONG).show();
-                                    bringGold = 0;
-                                }
-
-                                Log.d("bringGold", String.valueOf(bringGold));
-
-                                startActivity(new Intent(getApplicationContext(), GameActivity.class)
-                                        .putExtra("userID", userID)
-                                        .putExtra("nickname", nickname)
-                                        .putExtra("avatarID", avatarID)
-                                        .putExtra("gold", bringGold));
-
-//                                finish();
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();
             }
         });
 
@@ -235,5 +210,50 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void showBringGoldDialog(String gold){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
+        View view = LayoutInflater.from(MainActivity.this).inflate(
+                R.layout.dialog_bring_gold, (LinearLayout)findViewById(R.id.bgDialog));
+
+        TextView tvGold;
+        EditText etBringGold;
+        AppCompatButton btnConfirm;
+
+        builder.setView(view);
+
+        tvGold = view.findViewById(R.id.myGold);
+        tvGold.setText(gold);
+        etBringGold= view.findViewById(R.id.bringGold);
+        btnConfirm = view.findViewById(R.id.bgConfirm);
+
+        AlertDialog dialog = builder.create();
+
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bringGold = Integer.parseInt(etBringGold.getText().toString());
+
+                if (Integer.parseInt(gold) < bringGold) {
+                    Toast.makeText(getApplicationContext(), "현재 보유 금화보다 많은 금화를 가져갈 수 없습니다", Toast.LENGTH_LONG).show();
+                    bringGold = 0;
+                }
+                dialog.dismiss();
+
+                startActivity(new Intent(getApplicationContext(), GameActivity.class)
+                        .putExtra("userID", userID)
+                        .putExtra("nickname", nickname)
+                        .putExtra("avatarID", avatarID)
+                        .putExtra("gold", bringGold));
+
+            }
+        });
+        // Dialog 형태 지우기
+        if(dialog.getWindow() != null){
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        dialog.show();
+
+    }
 }

@@ -33,15 +33,31 @@
             android:textStyle="bold"
             android:fontFamily="@font/wild"
             android:textSize="24sp"/>
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:paddingHorizontal="20dp"-->
-<!--            android:text="남은 금화 :"-->
-<!--            android:textStyle="bold"-->
-<!--            android:fontFamily="@font/wild"-->
-<!--            android:textSize="24sp"/>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:text="남은 금화 :"
+                android:textStyle="bold"
+                android:fontFamily="@font/wild"
+                android:textSize="24sp"/>
+            <TextView
+                android:id="@+id/leftCoin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:text="1000"
+                android:textStyle="bold"
+                android:fontFamily="@font/wild"
+                android:textSize="24sp"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/o5_layout"
@@ -51,9 +67,9 @@
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/o5_name"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Order5"
+                android:text="선장"
                 android:paddingHorizontal="20dp"
                 android:textSize="24sp"
                 android:fontFamily="@font/wild"/>
@@ -62,6 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
+                android:inputType="numberDecimal"
                 android:textSize="24sp"
                 android:fontFamily="@font/wild"/>
 
@@ -75,9 +92,9 @@
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/o4_name"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Order4"
+                android:text="부선장"
                 android:paddingHorizontal="20dp"
                 android:textSize="24sp"
                 android:fontFamily="@font/wild"/>
@@ -86,6 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
+                android:inputType="numberDecimal"
                 android:textSize="24sp"
                 android:fontFamily="@font/wild"/>
 
@@ -98,9 +116,9 @@
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/o3_name"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Order3"
+                android:text="고급 선원"
                 android:paddingHorizontal="20dp"
                 android:textSize="24sp"
                 android:fontFamily="@font/wild"/>
@@ -108,6 +126,7 @@
                 android:id="@+id/o3_gold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
                 android:text="0"
                 android:textSize="24sp"
                 android:fontFamily="@font/wild"/>
@@ -122,9 +141,9 @@
             >
             <TextView
                 android:id="@+id/o2_name"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Order2"
+                android:text="일반 선원"
                 android:paddingHorizontal="20dp"
                 android:textSize="24sp"
                 android:fontFamily="@font/wild"/>
@@ -133,6 +152,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
+                android:inputType="numberDecimal"
                 android:textSize="24sp"
                 android:fontFamily="@font/wild"/>
 
@@ -145,9 +165,9 @@
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/o1_name"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Order1"
+                android:text="잡일꾼"
                 android:paddingHorizontal="20dp"
                 android:textSize="24sp"
                 android:fontFamily="@font/wild"/>
@@ -156,6 +176,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
+                android:inputType="numberDecimal"
                 android:textSize="24sp"
                 android:fontFamily="@font/wild"/>
 
@@ -168,7 +189,8 @@
             android:text="Confirm"
             android:textColor="@color/white"
             android:background="@drawable/gd_confirm"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:layout_gravity="center"/>
 
 
