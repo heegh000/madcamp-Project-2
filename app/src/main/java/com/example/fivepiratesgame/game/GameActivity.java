@@ -205,7 +205,7 @@ public class GameActivity extends AppCompatActivity {
 
                 tvUserNum.setText(Integer.toString(userNum) + " / 5");
 
-                if (userNum == 5) {
+                if (userNum == 3) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -322,10 +322,7 @@ public class GameActivity extends AppCompatActivity {
         Global.socket.on("offer_accept", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                if(me.getState() == 0) {
-
-                }
-                else  {
+                if(me.getState() == 1) {
                     Global.socket.emit("game_end", roomID, userID, bringGold);
                 }
             }
@@ -334,9 +331,11 @@ public class GameActivity extends AppCompatActivity {
         Global.socket.on("dead", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                me.setState(0);
-                Global.socket.emit("dead", roomID, userID);
-                voteLayout.setVisibility(View.INVISIBLE);
+                if(me.getState() == 1) {
+                    me.setState(0);
+                    Global.socket.emit("dead", roomID, userID);
+                    voteLayout.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
@@ -384,11 +383,22 @@ public class GameActivity extends AppCompatActivity {
         Global.socket.on("dilemma", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                if(me.getGet)
+                Log.d("BBBBBBBBBB", Integer.toString(me.getState()));
+                if(me.getState() == 1 && me.getOrder() != 3) {
+                    Log.d("AAAAAAAAAAAAA", "AAAAAAAAAAA");
+                    me.setVote(-1);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            accept.setBackgroundResource(R.drawable.game_textbox);
+                            reject.setBackgroundResource(R.drawable.game_textbox);
+                            showDilemmaDialog();
+                        }
+                    });
+                }
             }
         });
 
-        Global.socket.on("")
 
         Global.socket.connect();
 
@@ -527,5 +537,61 @@ public class GameActivity extends AppCompatActivity {
             dialog.show();
         }
 
+    }
+
+    private void showDilemmaDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
+
+        View view = LayoutInflater.from(GameActivity.this).inflate(
+                R.layout.dialog_dilemma, (LinearLayout)findViewById(R.id.dmDialog));
+
+
+        builder.setView(view);
+
+        TextView dmGold = (TextView) view.findViewById(R.id.dmGold);
+        AppCompatButton btnReject = (AppCompatButton) view.findViewById(R.id.dmReject);
+        AppCompatButton btnAccept = (AppCompatButton) view.findViewById(R.id.dmAccept);
+
+        AlertDialog dialog = builder.create();
+
+        if(me.getOrder() == 2) {
+            me.setGold(600);
+        }
+        else {
+            me.setGold(400);
+        }
+
+        dmGold.setText(Integer.toString(me.getGold()) + " GOLD");
+
+
+        btnReject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(me.getVote() == -1) {
+                    me.setVote(0);
+                    Global.socket.emit("dilemma", roomID, me.getUserID(), 0, me.getOrder());
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        btnAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(me.getVote() == -1) {
+                    me.setVote(1);
+                    Global.socket.emit("dilemma", roomID, me.getUserID(), 1, me.getOrder());
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        if(dialog.getWindow() != null){
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        if (!GameActivity.this.isFinishing()) {
+            dialog.show();
+        }
     }
 }
