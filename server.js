@@ -98,7 +98,6 @@ app.get('/history', async(req, res) => {
 
   console.log("/history " + param);
   db.query(sql, param, (error, rows) => {
-    console.log(rows);
     res.send(rows);
   });
 
@@ -193,7 +192,7 @@ io.on('connection', (socket) => {
 
     io.to(room_id).emit('join', user_count, room_id);
 
-    // 게임 시작 알림
+    // 게임 시작
     if(user_count == 5) {
 
       let orders = [];
@@ -215,7 +214,8 @@ io.on('connection', (socket) => {
       }
       let users = [];
       let cur_room = room[room_id + ""];
-      
+    
+
       cur_room.players.forEach(element => {
         users.push(element.user_id);
       });
@@ -227,13 +227,15 @@ io.on('connection', (socket) => {
         FROM user_info 
         WHERE user_id IN (?, ?, ?, ?, ?);`;
 
+
       let copy_room = room_id;
       db.query(sql, users, (error, rows) => {
 
         let result = {};
         result.data = rows;
 
-        
+        console.log(rows);
+         
         result.data.forEach(element => {
           element.order = orders.pop();
           
@@ -258,21 +260,13 @@ io.on('connection', (socket) => {
     console.log("socket offer " + socket.id)
     let cur_room = room[args[0] + ""];
 
-    console.log(cur_room);
-    
-
     cur_room.players.forEach(element => {
       element.offer_gold = args[element.order];
     });
 
-
-    console.log("offer");
-    console.log(cur_room);
-
-
     io.to(args[0]).emit('offer_end', args);
-
   });
+
 
   socket.on('vote',  (...args) => {
     let cur_room = room[args[0] + ""];
@@ -281,9 +275,7 @@ io.on('connection', (socket) => {
     cur_room.vote++;
 
     if(cur_room.vote == cur_room.alive) {
-      let is_end = cur_room.accept >= ((cur_room.alive / 2) + 1)
-
-      console.log("vote end: ", is_end);
+      let is_end = cur_room.accept >= (Math.floor(cur_room.alive / 2) + 1)
 
       if(is_end) {
         console.log("is end: ", args[0]);
@@ -292,23 +284,28 @@ io.on('connection', (socket) => {
       //다음 라운드
       else {
 
-        cur_room.alive--;
+        cur_room.vote = 0;
+        cur_room.accept = 0;
 
-        if(cur_room.alive == 2) {
-          io.to(args[0] + "").emit('dilemma');
-
-        }
-        else {
-          cur_room.vote = 0;
-          cur_room.accept = 0;
-
+        if(cur_room.alive - 1 == 2) {
           cur_room.players.forEach(player => {
-            if(player.order == cur_room.alive + 1) {
+            if(player.order == cur_room.alive) {
               player.order = -1;
               io.to(player.socket_id).emit('dead');
             }
             else {
-              io.to(player.socket_id).emit('offer_reject', cur_room.alive)
+              io.to(player.socket_id).emit('dilemma')
+            }
+          }); 
+        }
+        else {
+          cur_room.players.forEach(player => {
+            if(player.order == cur_room.alive) {  
+              player.order = -1;
+              io.to(player.socket_id).emit('dead');
+            }
+            else {
+              io.to(player.socket_id).emit('offer_reject', cur_room.alive-1)
             }
           }); 
         }
@@ -319,7 +316,21 @@ io.on('connection', (socket) => {
   socket.on('refresh', (...args) => {
     room[args[0]+ ""].vote --;
     room[args[0]+ ""].accept -= args[1];
-  })
+  });
+
+  socket.on('msg', (...args) => {
+    let cur_room = room[args[0] + ""];
+
+
+
+    let [to_user] = cur_room.players.filter((player) => {return player.user_id == args[2]});
+
+    console.log(to_user);
+
+    console.log(args[0] + " " + args[1] + " " + args[2] + " " + args[3] + " " + args[4]);
+
+    io.to(to_user.socket_id).emit('msg', args[1], args[3], args[4]);
+  });
 
 
   socket.on('dead', (...args) => {
@@ -329,8 +340,8 @@ io.on('connection', (socket) => {
     }
 
     let cur_room = room[args[0] + ""];
-
-    console.log('game_end room_id ', args[0], " ", args[1]);
+    cur_room.alive--;
+    console.log('dead room_id ', args[0], " ", args[1]);
 
     
     let [cur_player] = cur_room.players.filter(player => { return player.user_id + ""== args[1]});
@@ -352,7 +363,14 @@ io.on('connection', (socket) => {
     
     param = [cur_player.user_id, 100000, cur_player.order]
 
-    db.query(sql, param);
+    db.query(sql, param, (error, rows) => {
+      if(cur_room.alive == 0) {
+        delete room[args[0] + ""];
+        console.log("real end ", room);
+
+        io.to(args[0]).emit('game_end', args[0]);
+      }
+    });
 
   });
 
@@ -363,13 +381,14 @@ io.on('connection', (socket) => {
     }
 
     let cur_room = room[args[0] + ""];
+    cur_room.alive--;
 
     console.log('game_end room_id ', args[0], " ", args[1]);
 
     let [cur_player] = cur_room.players.filter(player => { return player.user_id + ""== args[1]});
 
     let sql = `
-      UPDATE user_info
+      UPDATE user_info  
       SET gold=?
       WHERE user_id=?;`;
     
@@ -388,22 +407,25 @@ io.on('connection', (socket) => {
     param = [cur_player.user_id, result, cur_player.order];
 
     db.query(sql, param, (error, rows) => {
-      cur_room.alive--;
+  
       
       if(cur_room.alive == 0) {
-        delete room[args[0]];
+        delete room[args[0] + ""];
         console.log("real end ", room);
 
         io.to(args[0]).emit('game_end', args[0]);
       }
     });
 
+
   })
 
   socket.on('dilemma', (...args) => {
     let cur_room = room[args[0] + ""];
 
-    if(! cur_room.hasOwnProperty("dilemma") ) {
+    console.log("dilemma");
+
+    if(!cur_room.hasOwnProperty("dilemma") ) {
       cur_room.dilemma = [];
     }
 
@@ -412,39 +434,74 @@ io.on('connection', (socket) => {
     user_dilemma.vote = args[2];
     user_dilemma.order = args[3];
 
-    cur_room.dilema.push(user_dilemma);
+    cur_room.dilemma.push(user_dilemma);
 
-    if(cur_room.length == 2) {
 
+    if(cur_room.dilemma.length == 2) {
+
+
+      let dilemma_players = [];
       let high;
       let low;
+      let high2;
+      let low2;
 
-      if(cur_room.dilema[0].order > cur_room.dilema[1].order) {
-        high = cur_room.players.filter((player) => player.user_id == cur_room.dilema[0].user_id);
-        low = cur_room.players.filter((player) => player.user_id == cur_room.dilema[1].user_id);
+      if(cur_room.dilemma[0].order > cur_room.dilemma[1].order) {
+        [high] = cur_room.players.filter((player) => player.user_id == cur_room.dilemma[0].user_id);
+        [low] = cur_room.players.filter((player) => player.user_id == cur_room.dilemma[1].user_id);
+        high2 = cur_room.dilemma[0];
+        low2 = cur_room.dilemma[1];
       }
       else {
-        high = cur_room.players.filter((player) => player.user_id == cur_room.dilema[1].user_id);
-        low = cur_room.players.filter((player) => player.user_id == cur_room.dilema[0].user_id);
+        [high] = cur_room.players.filter((player) => player.user_id == cur_room.dilemma[1].user_id);
+        [low] = cur_room.players.filter((player) => player.user_id == cur_room.dilemma[0].user_id);
+        high2 = cur_room.dilemma[1];
+        low2 = cur_room.dilemma[0];
       }
 
-      if(high.vote == 1 && low.vote == 1) {
-        high.gold = 600;
-        low.gold = 400;
-        io.to(args[0]).emit('offer_accept');
+      dilemma_players.push(high);
+      dilemma_players.push(low);
+
+      if(high2.vote == 1 && low2.vote == 1) {
+        high.offer_gold = 600;
+        low.offer_gold = 400;
+        io.to(low.socket_id).emit('offer_accept');
+        io.to(high.socket_id).emit('offer_accept');
       }
-      else if(high.vote == 0 && low.vote == 0) {
-        io.to(args[0]).emit('dead');
-      }
-      else if(high.vote == 1) {
-        high.gold = 1000;
-        io.to(high.socket_id).emit('dilemma_win');
+      else if(high2.vote == 0 && low2.vote == 0) {
+        high.offer_gold = 0;
+        low.offer_gold = 0;
+        
         io.to(low.socket_id).emit('dead');
+        io.to(high.socket_id).emit('dead');
+      }
+      else if(high2.vote == 1) {
+        high.offer_gold = 1000;
+        low.offer_gold = 0;
+        dilemma_players.forEach(element => {
+          if(element.order == 2)  {
+            io.to(element.socket_id).emit('offer_accept');
+          }
+          else {
+            io.to(element.socket_id).emit('dead');
+          }
+        
+        });
+
       }
       else {
-        low.gold = 1000;
-        io.to(low.socket_id).emit('dilemma_win');
-        io.to(high.socket_id).emit('dead');
+        low.offer_gold = 1000;
+        high.offer_gold = 0;
+        dilemma_players.forEach(element => {
+          if(element.order == 1)  {
+            io.to(element.socket_id).emit('offer_accept');
+          }
+          else {
+            io.to(element.socket_id).emit('dead');
+          }
+        
+        });
+
       }
     }
 
@@ -454,10 +511,12 @@ io.on('connection', (socket) => {
 
 
   socket.on('disconnect_req', (...args) => {
+
     socket.leave(args[0]);
 
+    console.log("disconnect_req "+ args[0] + " " + args[1] );
+
     if(room.hasOwnProperty(args[0] + "") && room[args[0] + ""].state == "WAITING") {
-      console.log("AAAAAAAAAAAAAA");
 
       if(user_count != 0) {
         user_count--;
