@@ -4,10 +4,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -59,8 +59,14 @@ public class MainActivity extends AppCompatActivity {
     private int bringGold = 0;
     private int avatarID = 0;
 
-    private final long finishtimeed = 1000;
+    private final long TIMEOUT = 1000;
     private long presstime = 0;
+
+    private long lastClickTime = 0;
+    private int click_cnt = 0;
+    private final int click_required = 10;
+    private int easter = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         tvRank.setText(rank);
         tvGold.setText(gold);
 
+        avatar.setOnClickListener(v->TouchContinuously());
 
         playgame.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
         long tempTime = System.currentTimeMillis();
         long intervalTime = tempTime - presstime;
 
-        if (0 <= intervalTime && finishtimeed >= intervalTime)
+        if (0 <= intervalTime && TIMEOUT >= intervalTime)
         {
             finish();
         }
@@ -187,6 +194,22 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "한번더 누르시면 앱이 종료됩니다", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void TouchContinuously(){
+
+        if(SystemClock.elapsedRealtime() - lastClickTime < TIMEOUT){
+            click_cnt ++;
+        }else{
+            click_cnt = 1;
+        }
+        lastClickTime = SystemClock.elapsedRealtime();
+        if(click_cnt == click_required) {
+            easter = 1;
+        }
+        if(easter == 1) avatar.setImageResource(mapAvatar.get(click_cnt%8));
+    }
+
+
 
     private void showBringGoldDialog(String gold){
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);

@@ -448,7 +448,6 @@ public class GameActivity extends AppCompatActivity {
         View view = LayoutInflater.from(GameActivity.this).inflate(
                 R.layout.dialog_gold_distribution, (LinearLayout)findViewById(R.id.gdDialog));
 
-//        TextView tvName5, tvName4, tvName3, tvName2, tvName1;
         TextView tvleftCoin;
         EditText etG5, etG4,etG3, etG2, etG1;
         AppCompatButton btnConfirm;

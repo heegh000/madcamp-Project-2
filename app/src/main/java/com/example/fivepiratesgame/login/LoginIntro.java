@@ -12,7 +12,7 @@ import com.example.fivepiratesgame.R;
 
 public class LoginIntro extends AppCompatActivity implements View.OnClickListener{
 
-    private final long finishtimeed = 1000;
+    private final long TIMEOUT = 1000;
     private long presstime = 0;
 
     @Override
@@ -54,7 +54,7 @@ public class LoginIntro extends AppCompatActivity implements View.OnClickListene
         long tempTime = System.currentTimeMillis();
         long intervalTime = tempTime - presstime;
 
-        if (0 <= intervalTime && finishtimeed >= intervalTime)
+        if (0 <= intervalTime && TIMEOUT >= intervalTime)
         {
             finish();
         }

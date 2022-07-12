@@ -55,7 +55,7 @@
         android:layout_height="match_parent"
         android:fontFamily="@font/xbones"
         android:gravity="center"
-        android:text="? gold"
+        android:text="\? gold"
         android:textSize="20dp" />
 
     <ImageView
