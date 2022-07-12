@@ -2,6 +2,7 @@
 
 "해적의 고뇌"는 고전 논리 문제인 [다섯명의 해적](https://namu.wiki/w/%EB%8B%A4%EC%84%AF%20%EB%AA%85%EC%9D%98%20%ED%95%B4%EC%A0%81)에서 착안하여 변칙을 준 게임입니다.
 
+[For game server details](https://github.com/dewpe000/fivePiratesGameServer)
 
 ## Account Management
 
@@ -44,13 +45,11 @@ Retrofit2를 사용하여 서버에 입력받은 ID, PW(, Nickname)를 전달해
 - 사망 시에도 게임을 관전할 수 있습니다.
 - Player가 두 명만 남을 경우에는 해적의 딜레마 게임을 시작합니다.
 
-[For game server details](https://github.com/dewpe000/fivePiratesGameServer)
-
 <img width="20%" src ="https://user-images.githubusercontent.com/56427889/178468637-07a178f2-c210-4db4-813a-030bec0f1f25.png"/> <img width="20%" src ="https://user-images.githubusercontent.com/56427889/178468755-18227385-ed7e-41e5-8e40-b86020ed71a3.png"/> 
 
 <img width="20%" src ="https://user-images.githubusercontent.com/56427889/178479105-cb006585-3059-4ba7-9345-4522a99d3899.png"/> <img width="20%" src ="https://user-images.githubusercontent.com/56427889/178479192-59321a51-9fbd-41d2-a753-635499538e62.png"/> <img width="20%" src ="https://user-images.githubusercontent.com/56427889/178479520-91e28949-13f4-4bdf-997a-c88dc38a21e4.png"/> <img width="20%" src ="https://user-images.githubusercontent.com/56427889/178480115-5db9b13c-2b3d-4cdb-8f97-800ef4c61418.png"/>
 
-<img width="20%" src =""/><img width="20%" src =""/><img width="20%" src =""/>
+<!-- <img width="20%" src =""/><img width="20%" src =""/><img width="20%" src =""/> -->
 
 
 ## Extra Features
