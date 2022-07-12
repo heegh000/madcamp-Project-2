@@ -73,8 +73,7 @@
             android:layout_marginBottom="5dp"
             android:orientation="horizontal"
             android:weightSum="1"
-            app:layout_constraintTop_toBottomOf="@id/rvPlayer"
-            app:layout_constraintBottom_toTopOf="@+id/bringGold"
+            app:layout_constraintBottom_toTopOf="@+id/bringGoldLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -111,25 +110,42 @@
                 android:layout_weight="0.1"
                 android:src="@drawable/ic_refresh" />
 
-
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/bringGold"
+        <LinearLayout
+            android:id="@+id/bringGoldLayout"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@drawable/game_textbox"
-            android:gravity="center"
-            android:paddingHorizontal="15dp"
-            android:text="Gold"
-            android:textColor="@color/white"
-            android:textSize="30dp"
-            android:fontFamily="@font/xbones"
+            android:paddingHorizontal="2dp"
             android:layout_marginBottom="20dp"
+            android:weightSum="1"
+            android:background="@drawable/game_textbox"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            />
+            app:layout_constraintStart_toStartOf="parent">
+            <TextView
+                android:id="@+id/bringGold"
+                android:layout_weight="0.5"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="30dp"
+                android:fontFamily="@font/xbones"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:text="Gold"
+                android:textColor="@color/white"
+                android:textSize="30dp"
+                android:fontFamily="@font/xbones"
+                />
+        </LinearLayout>
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

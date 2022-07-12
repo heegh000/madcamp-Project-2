@@ -152,15 +152,10 @@ public class GameActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "한 번 더 누르시면 대기열에서 나갑니다", Toast.LENGTH_SHORT).show();
         }
     }
-//    private PlayerAdapter.RecyclerViewClickListener initRecyclerViewListener() {
-//       return (v, position) -> {
-//           showSendMsgDialog(playerList.get(position).getUserID(), playerList.get(position).getState());
-//       };
-//    }
+
 
     private void initGame() {
         playerList = new ArrayList<>();
-//        PlayerAdapter.RecyclerViewClickListener listener = initRecyclerViewListener();
         playerAdapter = new PlayerAdapter(GameActivity.this, playerList);
         rvPlayer = (RecyclerView) findViewById(R.id.rvPlayer);
         rvPlayer.setLayoutManager(new LinearLayoutManager(this));
@@ -215,7 +210,7 @@ public class GameActivity extends AppCompatActivity {
 
                 tvUserNum.setText(Integer.toString(userNum) + " / 5");
 
-                if (userNum == 3) {
+                if (userNum == 5) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -349,6 +344,12 @@ public class GameActivity extends AppCompatActivity {
                     me.setState(0);
                     Global.socket.emit("dead", roomID, userID);
                     voteLayout.setVisibility(View.INVISIBLE);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            playerAdapter.notifyDataSetChanged();
+                        }
+                    });
                 }
             }
         });
@@ -375,6 +376,7 @@ public class GameActivity extends AppCompatActivity {
                     public void run() {
                         if(me.getOrder() == (int)args[0]) {
                             sendOffer((int)args[0]);
+                            playerAdapter.notifyDataSetChanged();
                         }
                     }
                 });
