@@ -147,9 +147,17 @@ public class LoginLocal extends AppCompatActivity {
                         String result = response.body().toString();
                         Log.d("Sign In success", result);
 
-                        getUserData(userID);
+                        if (result.equals("success")){
+                            getUserData(userID);
 
-                        loginViewModel.setLoginResult(new LoginResult(new LoggedInUserView(userID)));
+                            loginViewModel.setLoginResult(new LoginResult(new LoggedInUserView(userID)));
+
+                        }
+                        else{
+                            Toast.makeText(LoginLocal.this, "Log in Failed", Toast.LENGTH_SHORT).show();
+                        }
+
+
                     }
                     catch (Exception e){
                         e.printStackTrace();

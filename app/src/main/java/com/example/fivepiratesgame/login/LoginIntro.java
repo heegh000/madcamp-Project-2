@@ -163,6 +163,7 @@ public class LoginIntro extends AppCompatActivity implements View.OnClickListene
                                 }
                                 //실패시 토스트?
                                 else if(result.equals("fail")) {
+                                    Toast.makeText(LoginIntro.this, "Log in Failed", Toast.LENGTH_SHORT).show();
                                 }
 
                             }
