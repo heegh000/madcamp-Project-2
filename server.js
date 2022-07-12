@@ -530,10 +530,10 @@ io.on('connection', (socket) => {
         io.to(high.socket_id).emit('dead');
       }
       else if(high2.vote == 1) {
-        high.offer_gold = 1000;
-        low.offer_gold = 0;
+        high.offer_gold = 0;
+        low.offer_gold = 1000;
         dilemma_players.forEach(element => {
-          if(element.order == 2)  {
+          if(element.order == 1)  {
             io.to(element.socket_id).emit('offer_accept');
           }
           else {
@@ -544,10 +544,10 @@ io.on('connection', (socket) => {
 
       }
       else {
-        low.offer_gold = 1000;
-        high.offer_gold = 0;
+        low.offer_gold = 0;
+        high.offer_gold = 1000;
         dilemma_players.forEach(element => {
-          if(element.order == 1)  {
+          if(element.order == 2)  {
             io.to(element.socket_id).emit('offer_accept');
           }
           else {
