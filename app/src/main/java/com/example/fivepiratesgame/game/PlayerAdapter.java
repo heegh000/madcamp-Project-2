@@ -23,10 +23,16 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
 
     private List<PlayerData> playerList;
     private final Context context;
+    private RecyclerViewClickListener listener;
 
-    public PlayerAdapter(Context context, List<PlayerData> playerList) {
+    public PlayerAdapter(Context context, List<PlayerData> playerList, RecyclerViewClickListener listener) {
         this.context = context;
         this.playerList = playerList;
+        this.listener = listener;
+    }
+
+    public interface RecyclerViewClickListener {
+        void onClick(View v, int position);
     }
 
 
@@ -57,12 +63,12 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
             holder.ivGameProfile.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY);
         }
 
-        holder.ivMsg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showSendMsgDialog(holder.getHolderUID(), holder.getState());
-            }
-        });
+//        holder.ivMsg.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                showSendMsgDialog(holder.getHolderUID(), holder.getState());
+//            }
+//        });
     }
 
     @Override
@@ -70,7 +76,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
         return playerList.size();
     }
 
-    public class PlayerViewHolder extends RecyclerView.ViewHolder {
+    public class PlayerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         protected LinearLayout player_layout;
         protected ImageView ivGameProfile;
         protected TextView tvOrder;
@@ -89,6 +95,12 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
             this.tvNickname = (TextView) itemView.findViewById(R.id.tvNickname);
             this.tvGold = (TextView) itemView.findViewById(R.id.tvGold);
             this.ivMsg = (ImageView) itemView.findViewById(R.id.ivMsg);
+
+            itemView.setOnClickListener(this);
+        }
+        @Override
+        public void onClick(View v){
+            listener.onClick(v, getAdapterPosition());
         }
 
         public void setIDState(String holderUID, int state) {

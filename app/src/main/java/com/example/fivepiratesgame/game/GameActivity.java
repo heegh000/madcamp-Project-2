@@ -41,7 +41,7 @@ public class GameActivity extends AppCompatActivity {
 
     private List<PlayerData> playerList;
     private PlayerAdapter playerAdapter;
-    private RecyclerView rvPlayer;
+    private static RecyclerView rvPlayer;
 
     private LinearLayout voteLayout;
 
@@ -152,13 +152,20 @@ public class GameActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "한 번 더 누르시면 대기열에서 나갑니다", Toast.LENGTH_SHORT).show();
         }
     }
+    private PlayerAdapter.RecyclerViewClickListener initRecyclerViewListener() {
+       return (v, position) -> {
+           showSendMsgDialog(playerList.get(position).getUserID(), playerList.get(position).getState());
+       };
+    }
 
     private void initGame() {
         playerList = new ArrayList<>();
-        playerAdapter = new PlayerAdapter(GameActivity.this, playerList);
+        PlayerAdapter.RecyclerViewClickListener listener = initRecyclerViewListener();
+        playerAdapter = new PlayerAdapter(GameActivity.this, playerList, listener);
         rvPlayer = (RecyclerView) findViewById(R.id.rvPlayer);
         rvPlayer.setLayoutManager(new LinearLayoutManager(this));
         rvPlayer.setAdapter(playerAdapter);
+
 
         Intent intent = getIntent();
         userID = intent.getStringExtra("userID");
@@ -382,14 +389,14 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        Global.socket.on("dilemma", new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                if(me.getGet)
-            }
-        });
-
-        Global.socket.on("")
+//        Global.socket.on("dilemma", new Emitter.Listener() {
+//            @Override
+//            public void call(Object... args) {
+//                if(me.getGet)
+//            }
+//        });
+//
+//        Global.socket.on("")
 
         Global.socket.connect();
 
