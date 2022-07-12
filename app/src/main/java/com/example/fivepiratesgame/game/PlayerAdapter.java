@@ -45,7 +45,16 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
     public void onBindViewHolder(@NonNull PlayerViewHolder holder, int position) {
         PlayerData pData = playerList.get(position);
 
-        holder.tvOrder.setText(Integer.toString(pData.getOrder()));
+        String tmpOrder = Integer.toString(pData.getOrder());
+        switch (tmpOrder){
+            case "5": tmpOrder = "선장"; break;
+            case "4": tmpOrder = "부선장"; break;
+            case "3": tmpOrder = "고급선원"; break;
+            case "2": tmpOrder = "일반선원"; break;
+            case "1": tmpOrder = "잡일꾼"; break;
+        }
+
+        holder.tvOrder.setText(tmpOrder);
         holder.ivGameProfile.setImageResource(mapAvatar.get(pData.getAvatarID()));
         holder.tvNickname.setText(pData.getNickname());
         holder.setIDState(pData.getUserID(), pData.getState());
@@ -57,6 +66,10 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
         if(holder.getState() == 0){
             holder.player_layout.setBackgroundResource(R.color.transparent);
             holder.ivGameProfile.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY);
+        }
+
+        if(holder.getHolderUID() == GameActivity.gameActivity.me.getUserID()){
+            holder.player_layout.setBackgroundResource(R.drawable.game_player_me);
         }
 
         holder.ivMsg.setOnClickListener(new View.OnClickListener() {

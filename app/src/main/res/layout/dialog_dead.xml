@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/deadDialog"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="20dp"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/gd_bg"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gd_title"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:text="사망"
+            android:fontFamily="@font/wild"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/myOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="20dp"
+            android:text="당신의 금화 배분에 선원들이 분노하였습니다."
+            android:textStyle="bold"
+            android:fontFamily="@font/wild"
+            android:textSize="24sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="20dp"
+            android:text="남은 게임을 관전하거나, "
+            android:textStyle="bold"
+            android:fontFamily="@font/wild"
+            android:textSize="24sp"/>
+        <TextView
+            android:id="@+id/round"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="20dp"
+            android:text="게임에서 나갈 수 있습니다."
+            android:textStyle="bold"
+            android:fontFamily="@font/wild"
+            android:textSize="24sp"/>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/wgdConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="확인"
+            android:textColor="@color/white"
+            android:fontFamily="@font/wild"
+            android:textSize="24sp"
+            android:background="@drawable/gd_confirm"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+</LinearLayout>
