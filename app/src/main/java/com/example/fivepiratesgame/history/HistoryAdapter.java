@@ -14,6 +14,8 @@ import com.example.fivepiratesgame.R;
 
 import java.util.List;
 
+import static com.example.fivepiratesgame.MainActivity.mapAvatar;
+
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
 
     private List<HistoryData> historyList;
@@ -37,9 +39,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     public void onBindViewHolder(@NonNull HistoryAdapter.HistoryViewHolder holder, int position) {
         HistoryData hisData = historyList.get(position);
 
-
+        holder.ivHisProfile.setImageResource(mapAvatar.get(hisData.getAvatar()));
         holder.tvDate.setText(hisData.getTime());
-        holder.tvResult.setText(hisData.getResult()); //사망 띄우기!
+        if(Integer.parseInt(hisData.getResult()) == 100000){
+            holder.tvResult.setText("-DEAD-"); //사망 띄우기!
+        }
+        else {
+            holder.tvResult.setText(hisData.getResult());
+        }
+
     }
 
     @Override

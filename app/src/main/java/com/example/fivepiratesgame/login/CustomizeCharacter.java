@@ -39,7 +39,7 @@ public class CustomizeCharacter extends AppCompatActivity {
     private Retrofit retrofit;
     private RetrofitService service;
 
-    int tap = 2;
+    int tap = 7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public class CustomizeCharacter extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 tap ++;
-                tap %= 3;
+                tap %= 8;
                 avatar.setImageResource(mapAvatar.get(tap));
             }
         });
