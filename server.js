@@ -26,11 +26,13 @@ app.post('/signup', async(req, res) => {
     body : {user_id, user_pw, nickname}
   } = req;
 
+  console.log(nickname);
 
   let sql = `SELECT user_id, user_pw FROM user_info WHERE user_id=?;`;
   let param = [user_id];
 
   db.query(sql, param, (error, rows) => {
+    console.log(rows);
     if(rows.length == 0) {
 
       const hash_pw = crypto.createHash('sha512').update(user_pw).digest('base64');
@@ -45,8 +47,14 @@ app.post('/signup', async(req, res) => {
 
       console.log(user_id + " 계정 생성 시도")
 
+      console.log(param);
+
       db.query(sql, param, (error, rows, fields) => {
-        if(error) throw errors;
+        if(error)  {
+          console.log(error);
+          throw error;  
+        }
+      
         console.log(user_id + " 계정 생성 성공")
         res.send("success")
       })
@@ -62,8 +70,8 @@ app.post('/signup', async(req, res) => {
 
 app.get('/signin', async(req, res) => {
 
-  const user_id = req.query.user_id;
-  const user_pw = req.query.user_pw;
+  let user_id = req.query.user_id;
+  let user_pw = req.query.user_pw;
 
   let sql = `SELECT user_id, user_pw FROM user_info WHERE user_id=?;`;
   let param = [user_id];
@@ -90,14 +98,60 @@ app.get('/signin', async(req, res) => {
   });
 });
 
+app.post('/google', async(req, res) => {
+  let user_id = req.body.user_id;
+  let user_email = req.body.user_email;
+  let nickname = req.body.nickname;
+
+  console.log("AAAAAAAAAAAAAA");
+  let sql = `SELECT user_id, user_pw, user_email FROM user_info WHERE user_id=?;`
+  let param = [user_id];
+
+  db.query(sql, param, (error, rows) => {
+    //만약 계정이 없다면 생성
+    if(rows.length == 0) {
+      sql = `INSERT INTO user_info SET ?`
+      let param = {
+        user_id : user_id, 
+        user_email : user_email, 
+        nickname : nickname,
+        gold : 300
+      };
+      console.log(param);
+
+      db.query(sql, param, (error, rows, fields) => {
+        if(error)  {
+          console.log(error);
+          throw error;
+        }
+        console.log(user_id + " 계정 생성 성공")
+        res.send("signup")
+      })
+    }
+    else {
+      let [row] =rows;
+      if(row.user_pw == null) {
+        res.send("success");
+      }
+      else {
+        res.send("fail")
+      }
+ 
+    }
+
+  });
+
+});
+
 
 app.get('/history', async(req, res) => {
-  let sql = `SELECT DATE_FORMAT(time, '%y-%m-%d') AS time, result FROM history WHERE user_id=? ORDER BY time;`;
+  let sql = `SELECT DATE_FORMAT(time, '%y-%m-%d') AS time, result FROM (SELECT time, result FROM history WHERE user_id=? ORDER BY time DESC) AS a;`;
   let param = [req.query.user_id];
 
 
   console.log("/history " + param);
   db.query(sql, param, (error, rows) => {
+    console.log(rows);
     res.send(rows);
   });
 
@@ -107,7 +161,6 @@ app.get('/ranking', async(req, res) => {
   let sql = `SELECT nickname, gold, avatar_id FROM user_info ORDER BY gold DESC LIMIT 20;`;
   
   db.query(sql, (error, rows) => {
-    console.log(rows);
     res.send(rows);
   });
 
@@ -384,6 +437,7 @@ io.on('connection', (socket) => {
     cur_room.alive--;
 
     console.log('game_end room_id ', args[0], " ", args[1]);
+    console.log(cur_room.alive);
 
     let [cur_player] = cur_room.players.filter(player => { return player.user_id + ""== args[1]});
 
