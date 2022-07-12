@@ -268,8 +268,11 @@ public class GameActivity extends AppCompatActivity {
                         public void run() {
                             playerAdapter.notifyDataSetChanged();
                             tvbringGold.setText(Integer.toString(me.getBringGold()));
-                            if(me.getOrder() == (int) args[1]) {
+                            if(me.getOrder() == (int) args[1]) { //내가 서열1위일때 sendoffer
                                 sendOffer((int) args[1]);
+                            }
+                            else{ //서열1위가 금화를 배분중
+                                showWaitGDDialog((int)args[1]);
                             }
                         }
                     });
@@ -346,6 +349,7 @@ public class GameActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            showDeadDialog();
                             playerAdapter.notifyDataSetChanged();
                         }
                     });
@@ -362,13 +366,15 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
 
-                if(me.getState() == 0) {
-                    voteLayout.setVisibility(View.INVISIBLE);
-                }
+//                if(me.getState() == 0) {
+//                    voteLayout.setVisibility(View.INVISIBLE);
+//                }
 
                 me.setVote(-1);
                 accept.setBackgroundResource(R.drawable.game_textbox);
                 reject.setBackgroundResource(R.drawable.game_textbox);
+
+                voteLayout.setVisibility(View.INVISIBLE);
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -376,6 +382,9 @@ public class GameActivity extends AppCompatActivity {
                         if(me.getOrder() == (int)args[0]) {
                             sendOffer((int)args[0]);
                             playerAdapter.notifyDataSetChanged();
+                        }
+                        else{ //서열1위가 금화를 배분중
+                            showWaitGDDialog((int)args[0]);
                         }
                     }
                 });
@@ -389,6 +398,12 @@ public class GameActivity extends AppCompatActivity {
                 Global.socket.off("game_end");
                 Global.socket.emit("disconnect_req", roomID, userID);
                 // 종료 화면?
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showEndDialog();
+                    }
+                });
             }
         });
 
@@ -570,6 +585,80 @@ public class GameActivity extends AppCompatActivity {
         }
 
     }
+    private void showWaitGDDialog(int num){
+        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
+
+        View view = LayoutInflater.from(GameActivity.this).inflate(
+                R.layout.dialog_waiting_gd, (LinearLayout)findViewById(R.id.waitGDDialog));
+
+        builder.setView(view);
+
+        TextView tvResult = (TextView) view.findViewById(R.id.tvResult);
+        TextView tvWait = (TextView) view.findViewById(R.id.tvWait);
+        TextView tvRound = (TextView) view.findViewById(R.id.tvRound);
+        AppCompatButton btnConfirm = (AppCompatButton) view.findViewById(R.id.wgdConfirm);
+
+        String tmpKing = "선장", King = "선장";
+
+        switch (num){
+            case 5: tmpKing = "선장"; King = "선장"; break;
+            case 4: tmpKing = "선장"; King = "부선장"; break;
+            case 3: tmpKing = "부선장"; King ="고급선원"; break;
+        }
+
+        tvResult.setText(tmpKing + "의 금화 배분을 선원들이 반대하여\n" +tmpKing+"이 사망했습니다");
+        tvWait.setText(King + "의 금화배분을 기다리세요.");
+        tvRound.setText("현재 생존자는 " + num + "명입니다.");
+
+        if(num == 5) tvResult.setVisibility(View.GONE);
+
+        AlertDialog dialog = builder.create();
+
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        if(dialog.getWindow() != null){
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        if (!GameActivity.this.isFinishing()) {
+            dialog.show();
+        }
+
+    }
+
+    private void showDeadDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
+
+        View view = LayoutInflater.from(GameActivity.this).inflate(
+                R.layout.dialog_dead, (LinearLayout)findViewById(R.id.deadDialog));
+
+        builder.setView(view);
+
+        AppCompatButton btnConfirm = (AppCompatButton) view.findViewById(R.id.wgdConfirm);
+
+        AlertDialog dialog = builder.create();
+
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        if(dialog.getWindow() != null){
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        if (!GameActivity.this.isFinishing()) {
+            dialog.show();
+        }
+
+    }
 
     private void showDilemmaDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
@@ -742,6 +831,48 @@ public class GameActivity extends AppCompatActivity {
         if (!GameActivity.this.isFinishing()) {
             dialog.show();
         }
+    }
+
+
+    private void showEndDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
+
+        View view = LayoutInflater.from(GameActivity.this).inflate(
+                R.layout.dialog_game_end, (LinearLayout)findViewById(R.id.endDialog));
+
+        builder.setView(view);
+
+        TextView tvState = (TextView) view.findViewById(R.id.stateResult);
+        TextView tvGold = (TextView) view.findViewById(R.id.goldResult);
+        AppCompatButton btnConfirm = (AppCompatButton) view.findViewById(R.id.endConfirm);
+
+        AlertDialog dialog = builder.create();
+
+        if(me.getState() == 1){
+            tvState.setText("축하합니다! 탐욕스러운 선원들 사이에서 당신의 금화를 지켜냈습니다!");
+            int goldResult = me.getGold() - initBringGold + me.getBringGold();
+            tvGold.setText("금화 : "+Integer.toString(goldResult));
+        }
+        else{
+            tvState.setText("당신은 선원들의 반란으로 사망하였습니다");
+            tvGold.setText("금화 : " + Integer.toString(-initBringGold));
+        }
+
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        if(dialog.getWindow() != null){
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        if (!GameActivity.this.isFinishing()) {
+            dialog.show();
+        }
+
     }
 
 

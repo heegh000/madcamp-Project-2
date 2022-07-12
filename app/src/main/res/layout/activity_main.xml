@@ -9,180 +9,196 @@
     android:paddingHorizontal="30dp"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tvName"
+    <LinearLayout
+        android:id="@+id/userInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/xbones"
-        android:gravity="center"
-        android:text="User Name"
-        android:textColor="@color/white"
-        android:textSize="50dp"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="20dp">
 
-    <TextView
-        android:id="@+id/tvID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:gravity="center"
-        android:text="userID"
-        android:textColor="@color/white"
-        android:textSize="25dp"
-        app:layout_constraintTop_toBottomOf="@+id/tvName" />
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/xbones"
+            android:gravity="center"
+            android:text="User Name"
+            android:textColor="@color/white"
+            android:textSize="50dp"
+             />
+
+        <TextView
+            android:id="@+id/tvID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:gravity="center"
+            android:text="userID"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            />
+
+    </LinearLayout>
+
 
     <ImageView
         android:id="@+id/avatar"
         android:layout_width="wrap_content"
         android:layout_height="220dp"
         android:src="@drawable/pikachu"
-        app:layout_constraintBottom_toTopOf="@id/charInfo"
-        app:layout_constraintTop_toBottomOf="@+id/tvID"
+        android:layout_marginTop="100dp"
+        app:layout_constraintBottom_toTopOf="@id/detailLayout"
+        app:layout_constraintTop_toBottomOf="@+id/userInfo"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="60dp"
         />
 
     <ImageView
         android:layout_width="240dp"
         android:layout_height="200dp"
         android:src="@drawable/pirate_hat"
-        app:layout_constraintTop_toBottomOf="@+id/tvID"
+        android:layout_marginTop="100dp"
+        app:layout_constraintBottom_toTopOf="@id/avatar"
+        app:layout_constraintTop_toBottomOf="@+id/userInfo"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="-25dp"
-        />
+        app:layout_constraintRight_toRightOf="parent" />
+
 
     <LinearLayout
-        android:id="@+id/charInfo"
+        android:id="@+id/detailLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_light1"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/avatar"
-        app:layout_constraintBottom_toTopOf="@id/playgame">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/avatar">
 
         <LinearLayout
+            android:id="@+id/charInfo"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_light1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/xbones"
+                    android:gravity="center"
+                    android:text="Ranking"
+                    android:textSize="30dp" />
+
+                <TextView
+                    android:id="@+id/tvRank"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/xbones"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textSize="30dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/xbones"
+                    android:gravity="center"
+                    android:text="Gold"
+                    android:textSize="30dp" />
+
+                <TextView
+                    android:id="@+id/tvGold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/xbones"
+                    android:gravity="center"
+                    android:text="300"
+                    android:textSize="30dp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/playgame"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@color/deep4"
+            android:fontFamily="@font/xbones"
+            android:text="PLAY GAME"
+            android:textAllCaps="false"
+            android:textColor="#000"
+            android:textSize="40dp" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="15dp"
             android:orientation="horizontal"
-            android:weightSum="1">
+            android:weightSum="1"
+            app:layout_constraintBottom_toTopOf="@id/logout"
+            app:layout_constraintTop_toBottomOf="@+id/playgame">
 
             <TextView
+                android:id="@+id/history"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:fontFamily="@font/xbones"
+                android:gravity="center"
+                android:text="History"
+                android:textAllCaps="false"
+                android:textColor="#fff"
+                android:textSize="25dp" />
+
+            <TextView
+                android:id="@+id/ranking"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:fontFamily="@font/xbones"
                 android:gravity="center"
                 android:text="Ranking"
-                android:textSize="30dp" />
-
-            <TextView
-                android:id="@+id/tvRank"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:fontFamily="@font/xbones"
-                android:gravity="center"
-                android:text="1"
-                android:textSize="30dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="1">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:fontFamily="@font/xbones"
-                android:gravity="center"
-                android:text="Gold"
-                android:textSize="30dp" />
-
-            <TextView
-                android:id="@+id/tvGold"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:fontFamily="@font/xbones"
-                android:gravity="center"
-                android:text="300"
-                android:textSize="30dp" />
+                android:textAllCaps="false"
+                android:textColor="#fff"
+                android:textSize="25dp" />
 
         </LinearLayout>
-    </LinearLayout>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/playgame"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/deep4"
-        android:fontFamily="@font/xbones"
-        android:text="PLAY GAME"
-        android:textAllCaps="false"
-        android:textColor="#000"
-        android:textSize="40dp"
-        app:layout_constraintBottom_toTopOf="@id/linearLayout"
-        app:layout_constraintTop_toBottomOf="@+id/charInfo" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:orientation="horizontal"
-        android:weightSum="1"
-        app:layout_constraintBottom_toTopOf="@id/logout"
-        app:layout_constraintTop_toBottomOf="@+id/playgame">
 
         <TextView
-            android:id="@+id/history"
-            android:layout_width="0dp"
+            android:id="@+id/logout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:fontFamily="@font/xbones"
-            android:gravity="center"
-            android:text="History"
-            android:textAllCaps="false"
-            android:textColor="#fff"
-            android:textSize="25dp" />
-
-        <TextView
-            android:id="@+id/ranking"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:fontFamily="@font/xbones"
-            android:gravity="center"
-            android:text="Ranking"
-            android:textAllCaps="false"
-            android:textColor="#fff"
-            android:textSize="25dp" />
+            android:layout_gravity="center"
+            android:layout_marginBottom="50dp"
+            android:text="L o g  o u t"
+            android:textColor="#095F87"
+            android:textSize="20dp" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:gravity="center"
-        android:text="L o g  o u t"
-        android:textColor="#095F87"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
