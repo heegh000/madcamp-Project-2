@@ -29,10 +29,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:paddingHorizontal="20dp"
-            android:text="이제 남은 해적이 두 명입니다.\n상대방이 거래를 제안합니다.\n* 두 명의 해적이 모두 수락한다면 금화를 배분 받습니다. \n* 두 명의 해적이 모두 거절한다면 금화를 모두 잃습니다 \n* 둘 중 한 명만 수락한다면 그 해적이 모두 갖습니다."
+            android:text="이제 남은 해적이 두 명입니다.\n상대방이 거래를 제안합니다.\n* 두 명의 해적이 모두 수락한다면 금화를 배분 받습니다. \n* 두 명의 해적이 모두 거절한다면 금화를 모두 잃습니다 \n* 둘 중 한 명만 수락한다면 그 해적은 죽습니다."
             android:textStyle="bold"
             android:fontFamily="@font/wild"
-            android:textSize="24sp"/>
+            android:textSize="18sp"/>
 
         <TextView
             android:id="@+id/dmGold"
