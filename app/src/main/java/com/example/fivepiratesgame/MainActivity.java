@@ -148,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
                     avatar.setImageResource(mapAvatar.get(uData.getAvatarID()));
                     tvRank.setText(uData.getRank());
                     tvGold.setText(uData.getGold());
+
+                    gold = uData.getGold();
                 }
                 else {
                     Log.d("Main getUser fail", "error = " + String.valueOf(response.code()) + response.errorBody());

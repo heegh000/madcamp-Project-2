@@ -152,16 +152,16 @@ public class GameActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "한 번 더 누르시면 대기열에서 나갑니다", Toast.LENGTH_SHORT).show();
         }
     }
-    private PlayerAdapter.RecyclerViewClickListener initRecyclerViewListener() {
-       return (v, position) -> {
-           showSendMsgDialog(playerList.get(position).getUserID(), playerList.get(position).getState());
-       };
-    }
+//    private PlayerAdapter.RecyclerViewClickListener initRecyclerViewListener() {
+//       return (v, position) -> {
+//           showSendMsgDialog(playerList.get(position).getUserID(), playerList.get(position).getState());
+//       };
+//    }
 
     private void initGame() {
         playerList = new ArrayList<>();
-        PlayerAdapter.RecyclerViewClickListener listener = initRecyclerViewListener();
-        playerAdapter = new PlayerAdapter(GameActivity.this, playerList, listener);
+//        PlayerAdapter.RecyclerViewClickListener listener = initRecyclerViewListener();
+        playerAdapter = new PlayerAdapter(GameActivity.this, playerList);
         rvPlayer = (RecyclerView) findViewById(R.id.rvPlayer);
         rvPlayer.setLayoutManager(new LinearLayoutManager(this));
         rvPlayer.setAdapter(playerAdapter);
@@ -197,7 +197,9 @@ public class GameActivity extends AppCompatActivity {
         Global.socket.on("disconnect_req", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                //모든 이벤트 off해야함
+                Global.socket.off("disconnect_req");
+                Global.socket.off("game_end");
+                Global.socket.off("dead");
                 Global.socket.off("join");
                 Global.socket.disconnect();
                 finish();
@@ -213,7 +215,7 @@ public class GameActivity extends AppCompatActivity {
 
                 tvUserNum.setText(Integer.toString(userNum) + " / 5");
 
-                if (userNum == 5) {
+                if (userNum == 3) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -330,10 +332,9 @@ public class GameActivity extends AppCompatActivity {
         Global.socket.on("offer_accept", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                if(me.getState() == 0) {
-
-                }
-                else  {
+                Global.socket.off("offer_accept");
+                Global.socket.off("dead");
+                if(me.getState() == 1) {
                     Global.socket.emit("game_end", roomID, userID, bringGold);
                 }
             }
@@ -342,9 +343,13 @@ public class GameActivity extends AppCompatActivity {
         Global.socket.on("dead", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                me.setState(0);
-                Global.socket.emit("dead", roomID, userID);
-                voteLayout.setVisibility(View.INVISIBLE);
+                Global.socket.off("offer_accept");
+                Global.socket.off("dead");
+                if(me.getState() == 1) {
+                    me.setState(0);
+                    Global.socket.emit("dead", roomID, userID);
+                    voteLayout.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
@@ -357,8 +362,11 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
 
-                me.setVote(-1);
+                if(me.getState() == 0) {
+                    voteLayout.setVisibility(View.INVISIBLE);
+                }
 
+                me.setVote(-1);
                 accept.setBackgroundResource(R.drawable.game_textbox);
                 reject.setBackgroundResource(R.drawable.game_textbox);
 
@@ -377,6 +385,7 @@ public class GameActivity extends AppCompatActivity {
         Global.socket.on("game_end", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
+                Global.socket.off("game_end");
                 Global.socket.emit("disconnect_req", roomID, userID);
                 // 종료 화면?
             }
@@ -385,18 +394,43 @@ public class GameActivity extends AppCompatActivity {
         Global.socket.on("msg", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
+                Log.d("BBBBBBBBBBBBBBBB", (String) args[0]);
+                Log.d("BBBBBBBBBBBBBBBB", (String) args[2]);
+
+                for(int i = 0; i < playerList.size(); i++) {
+                    if(playerList.get(i).getUserID() == (String) args[0]) {
+                        int tempI = i;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showReceiveDialog(playerList.get(tempI).getNickname(), (int) args[1], (String) args[2]);
+                            }
+                        });
+                        break;
+                    }
+                }
 
             }
         });
 
-//        Global.socket.on("dilemma", new Emitter.Listener() {
-//            @Override
-//            public void call(Object... args) {
-//                if(me.getGet)
-//            }
-//        });
-//
-//        Global.socket.on("")
+
+        Global.socket.on("dilemma", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                if(me.getState() == 1 && me.getOrder() != 3) {
+                    me.setVote(-1);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            accept.setBackgroundResource(R.drawable.game_textbox);
+                            reject.setBackgroundResource(R.drawable.game_textbox);
+                            showDilemmaDialog();
+                        }
+                    });
+                }
+            }
+        });
+
 
         Global.socket.connect();
 
@@ -537,75 +571,219 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    public void showSendMsgDialog(String UId, int state){
-        // 나, 죽었거나, 이미 투표했거나
-        if(UId == me.getUserID() ){
-            Toast.makeText(getApplicationContext(), "본인에게 뒷거래를 제안할 수 없습니다", Toast.LENGTH_LONG).show();
-        }
-        if(state == 0){
-            Toast.makeText(getApplicationContext(), "사망한 사람에게 뒷거래를 제안할 수 없습니다", Toast.LENGTH_LONG).show();
-
-        }
-        if(me.getVote() != -1) {
-            Toast.makeText(getApplicationContext(), "투표에 참가한 이후에는 뒷거래를 제안할 수 없습니다", Toast.LENGTH_LONG).show();
-
-        }
-        if(me.getBringGold() == 0) {
-            Toast.makeText(getApplicationContext(), "뒷거래를 제안할 돈이 없습니다", Toast.LENGTH_LONG).show();
-
-        }
-
+    private void showDilemmaDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
 
         View view = LayoutInflater.from(GameActivity.this).inflate(
-                R.layout.dialog_send_msg, (LinearLayout)findViewById(R.id.sendDialog));
+                R.layout.dialog_dilemma, (LinearLayout)findViewById(R.id.dmDialog));
 
-        TextView tvMyGold;
-        EditText etSendGold, etSendMsg;
-        AppCompatButton sendBtn;
 
         builder.setView(view);
 
-        tvMyGold = view.findViewById(R.id.myGold);
-        tvMyGold.setText(me.getBringGold());
-
-        etSendGold= view.findViewById(R.id.sendGold);
-        etSendMsg = view.findViewById(R.id.sendMsg);
-        sendBtn = view.findViewById(R.id.sendBtn);
+        TextView dmGold = (TextView) view.findViewById(R.id.dmGold);
+        AppCompatButton btnReject = (AppCompatButton) view.findViewById(R.id.dmReject);
+        AppCompatButton btnAccept = (AppCompatButton) view.findViewById(R.id.dmAccept);
 
         AlertDialog dialog = builder.create();
 
-        sendBtn.setOnClickListener(new View.OnClickListener() {
+        if(me.getOrder() == 2) {
+            me.setGold(600);
+        }
+        else {
+            me.setGold(400);
+        }
+
+        dmGold.setText(Integer.toString(me.getGold()) + " GOLD");
+
+
+        btnReject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int sendGold = 0;
-                String sendMsg = etSendMsg.getText().toString();
-
-                if(TextUtils.isEmpty(etSendGold.getText())) {
-                    sendGold = 0;
+                if(me.getVote() == -1) {
+                    me.setVote(0);
+                    Global.socket.emit("dilemma", roomID, me.getUserID(), 0, me.getOrder());
+                    dialog.dismiss();
                 }
-                else {
-                    sendGold = Integer.parseInt(etSendGold.getText().toString());
-                }
-
-                if (me.getBringGold() < sendGold) {
-                    Toast.makeText(getApplicationContext(), "현재 보유 금화보다 많은 금화를 보낼 수 없습니다", Toast.LENGTH_LONG).show();
-                    sendGold = 0;
-                }
-
-                Global.socket.emit("msg", me.getRoomId(), me.getUserID(), UId, sendGold, sendMsg);
-                me.setBringGold(me.getBringGold()-sendGold);
-                dialog.dismiss();
-
-
             }
         });
-        // Dialog 형태 지우기
+
+        btnAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(me.getVote() == -1) {
+                    me.setVote(1);
+                    Global.socket.emit("dilemma", roomID, me.getUserID(), 1, me.getOrder());
+                    dialog.dismiss();
+                }
+            }
+        });
+
         if(dialog.getWindow() != null){
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
         }
 
-        dialog.show();
-
+        if (!GameActivity.this.isFinishing()) {
+            dialog.show();
+        }
     }
+    public void showSendDialog(PlayerAdapter.PlayerViewHolder holder) {
+
+            // 나, 죽었거나, 이미 투표했거나
+//            if(UId == me.getUserID() ){
+//                Toast.makeText(getApplicationContext(), "본인에게 뒷거래를 제안할 수 없습니다", Toast.LENGTH_LONG).show();
+//            }
+//            if(state == 0){
+//                Toast.makeText(getApplicationContext(), "사망한 사람에게 뒷거래를 제안할 수 없습니다", Toast.LENGTH_LONG).show();
+//
+//            }
+            if(me.getVote() != -1) {
+                Toast.makeText(getApplicationContext(), "투표에 참가한 이후에는 뒷거래를 제안할 수 없습니다", Toast.LENGTH_LONG).show();
+
+            }
+            if(me.getBringGold() == 0) {
+                Toast.makeText(getApplicationContext(), "뒷거래를 제안할 돈이 없습니다", Toast.LENGTH_LONG).show();
+
+            }
+        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
+
+        View view = LayoutInflater.from(GameActivity.this).inflate(
+                R.layout.dialog_send_msg, (LinearLayout)findViewById(R.id.sendDialog));
+//
+//        TextView tvMyGold;
+//        EditText etSendGold, etSendMsg;
+//        AppCompatButton sendBtn;
+//
+//        builder.setView(view);
+//
+//        tvMyGold = view.findViewById(R.id.myGold);
+//        tvMyGold.setText(me.getBringGold());
+//
+//        etSendGold= view.findViewById(R.id.sendGold);
+//        etSendMsg = view.findViewById(R.id.sendMsg);
+//        sendBtn = view.findViewById(R.id.sendBtn);
+//
+//        AlertDialog dialog = builder.create();
+//
+//        sendBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                int sendGold = 0;
+//                String sendMsg = etSendMsg.getText().toString();
+//
+//                if(TextUtils.isEmpty(etSendGold.getText())) {
+//                    sendGold = 0;
+//                }
+//                else {
+//                    sendGold = Integer.parseInt(etSendGold.getText().toString());
+//                }
+//
+//                if (me.getBringGold() < sendGold) {
+//                    Toast.makeText(getApplicationContext(), "현재 보유 금화보다 많은 금화를 보낼 수 없습니다", Toast.LENGTH_LONG).show();
+//                    sendGold = 0;
+//                }
+//
+//                Global.socket.emit("msg", me.getRoomId(), me.getUserID(), UId, sendGold, sendMsg);
+//                me.setBringGold(me.getBringGold()-sendGold);
+//                dialog.dismiss();
+//
+//
+//            }
+//        });
+
+
+        builder.setView(view);
+
+        TextView myGold = (TextView) view.findViewById(R.id.myGold);
+        EditText etSendGold = (EditText) view.findViewById(R.id.sendGold);
+        EditText etSendMsg = (EditText) view.findViewById(R.id.sendMsg);
+        AppCompatButton btnCancel = (AppCompatButton) view.findViewById(R.id.smCancel);
+        AppCompatButton btnConfirm = (AppCompatButton) view.findViewById(R.id.smConfirm);
+
+
+        AlertDialog dialog = builder.create();
+
+
+        myGold.setText(Integer.toString(me.getBringGold()));
+
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int sendGold;
+                String sendMsg;
+
+                if(TextUtils.isEmpty(etSendGold.getText())) { sendGold = 0; }
+                else sendGold = Integer.parseInt(etSendGold.getText().toString());
+
+                me.setBringGold(me.getBringGold() - sendGold);
+
+                sendMsg = etSendMsg.getText().toString();
+
+                Global.socket.emit("msg", me.getRoomId(), me.getUserID(), holder.getHolderUID(), sendGold, sendMsg);
+
+                dialog.dismiss();
+
+            }
+        });
+
+        if(dialog.getWindow() != null){
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        if (!GameActivity.this.isFinishing()) {
+            dialog.show();
+        }
+    }
+
+    public void showReceiveDialog(String sender, int receiveGold, String receiveMsg) {
+
+        Log.d("AAAAAAAAAA", "AAAAAAAAAAAAA");
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
+
+        View view = LayoutInflater.from(GameActivity.this).inflate(
+                R.layout.dialog_receive_msg, (LinearLayout)findViewById(R.id.receiveDialog));
+
+
+        builder.setView(view);
+
+        TextView tvSender = (TextView) view.findViewById(R.id.myGold);
+        TextView tvReceiveGold = (TextView) view.findViewById(R.id.receiveGold);
+        TextView tvReceiveMsg = (TextView) view.findViewById(R.id.receiveMsg);
+
+        AppCompatButton btnConfirm = (AppCompatButton) view.findViewById(R.id.rmConfirm);
+
+
+        AlertDialog dialog = builder.create();
+
+
+        tvSender.setText(sender);
+        tvReceiveGold.setText(Integer.toString(receiveGold));
+        tvReceiveMsg.setText(receiveMsg);
+
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                me.setBringGold(me.getBringGold() + receiveGold);
+                dialog.dismiss();
+            }
+        });
+
+        if(dialog.getWindow() != null){
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        if (!GameActivity.this.isFinishing()) {
+            dialog.show();
+        }
+    }
+
+
 }

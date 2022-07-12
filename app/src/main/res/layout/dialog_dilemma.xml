@@ -35,11 +35,12 @@
             android:textSize="24sp"/>
 
         <TextView
+            android:id="@+id/dmGold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:paddingHorizontal="20dp"
-            android:text="Gold"
+            android:text="Gold: "
             android:textStyle="bold"
             android:fontFamily="@font/wild"
             android:textSize="24sp"/>/>
