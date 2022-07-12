@@ -62,13 +62,20 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
         holder.ivMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int err_code = 0;
 
-
-                if(holder.getHolderUID() == GameActivity.gameActivity.me.getUserID() && holder.getState() == 0 && GameActivity.gameActivity.me.getVote() != -1) {
+                if(holder.getHolderUID() == GameActivity.gameActivity.me.getUserID()){
+                    err_code = 1;
+                }
+                if(holder.getState() == 0){
+                    err_code = 2;
 
                 }
+//                if(GameActivity.gameActivity.me.getVote() != -1) {
+//                    err_code = 3;
+//                }
                 else {
-                    GameActivity.gameActivity.showSendDialog(holder);
+                    GameActivity.gameActivity.showSendDialog(holder, err_code);
                 }
             }
         });
