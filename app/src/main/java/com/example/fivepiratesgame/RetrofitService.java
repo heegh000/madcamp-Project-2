@@ -36,4 +36,10 @@ public interface RetrofitService {
     @POST("create")
     Call<UserData> postCreateUser(@Field("user_id") String user_id,
                                   @Field("avatar_id") String avatar_id);
+
+    @FormUrlEncoded
+    @POST("google")
+    Call<String> postGoogle(@Field("user_id") String user_id,
+                            @Field("user_email") String user_email,
+                            @Field("nickname") String nickname);
 }
