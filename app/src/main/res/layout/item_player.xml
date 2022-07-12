@@ -10,12 +10,12 @@
 
     <TextView
         android:id="@+id/tvOrder"
-        android:layout_width="40dp"
+        android:layout_width="80dp"
         android:layout_height="match_parent"
-        android:fontFamily="@font/xbonesbold"
+        android:fontFamily="@font/wild"
         android:gravity="center"
         android:text="order"
-        android:textSize="20dp" />
+        android:textSize="24dp" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"

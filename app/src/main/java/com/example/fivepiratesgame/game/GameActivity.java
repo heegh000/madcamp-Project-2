@@ -272,7 +272,7 @@ public class GameActivity extends AppCompatActivity {
                                 sendOffer((int) args[1]);
                             }
                             else{ //서열1위가 금화를 배분중
-                                showWaitGDDialog((int)args[1]);
+                                showWaitGDDialog(5);
                             }
                         }
                     });
@@ -720,17 +720,21 @@ public class GameActivity extends AppCompatActivity {
             // 나, 죽었거나, 이미 투표했거나
             if(err_code==1){
                 Toast.makeText(getApplicationContext(), "본인에게 뒷거래를 제안할 수 없습니다", Toast.LENGTH_LONG).show();
+                return;
             }
             if(err_code==2){
                 Toast.makeText(getApplicationContext(), "사망한 사람에게 뒷거래를 제안할 수 없습니다", Toast.LENGTH_LONG).show();
+                return;
 
             }
             if(me.getVote() != -1) {
                 Toast.makeText(getApplicationContext(), "투표에 참가한 이후에는 뒷거래를 제안할 수 없습니다", Toast.LENGTH_LONG).show();
+                return;
 
             }
             if(me.getBringGold() == 0) {
                 Toast.makeText(getApplicationContext(), "뒷거래를 제안할 돈이 없습니다", Toast.LENGTH_LONG).show();
+                return;
 
             }
         AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
