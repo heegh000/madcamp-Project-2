@@ -272,7 +272,7 @@ public class GameActivity extends AppCompatActivity {
                                 sendOffer((int) args[1]);
                             }
                             else{ //서열1위가 금화를 배분중
-                                showWaitGDDialog((int)args[0]);
+                                showWaitGDDialog((int)args[1]);
                             }
                         }
                     });
