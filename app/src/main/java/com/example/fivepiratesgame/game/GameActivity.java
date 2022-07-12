@@ -16,7 +16,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -53,7 +52,7 @@ public class GameActivity extends AppCompatActivity {
     private String nickname;
     private int avatarID;
     private int roomID;
-    private int bringGold;
+    private int initBringGold;
 
     ConstraintLayout introGame;
     ConstraintLayout inGame;
@@ -171,7 +170,7 @@ public class GameActivity extends AppCompatActivity {
         userID = intent.getStringExtra("userID");
         nickname = intent.getStringExtra("nickname");
         avatarID = intent.getIntExtra("avatarID", 2);
-        bringGold = intent.getIntExtra("gold", 0);
+        initBringGold = intent.getIntExtra("gold", 0);
         roomID = intent.getIntExtra("roomID", 0);
 
         introGame = findViewById(R.id.introGame);
@@ -215,7 +214,7 @@ public class GameActivity extends AppCompatActivity {
 
                 tvUserNum.setText(Integer.toString(userNum) + " / 5");
 
-                if (userNum == 3) {
+                if (userNum == 5) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -255,7 +254,7 @@ public class GameActivity extends AppCompatActivity {
                         if (userID.equals(tempUID)) {
                             me = player;
                             me.setRoomId(roomID);
-                            me.setBringGold(bringGold);
+                            me.setBringGold(initBringGold);
                         }
                         playerList.add(player);
                     }
@@ -335,7 +334,7 @@ public class GameActivity extends AppCompatActivity {
                 Global.socket.off("offer_accept");
                 Global.socket.off("dead");
                 if(me.getState() == 1) {
-                    Global.socket.emit("game_end", roomID, userID, bringGold);
+                    Global.socket.emit("game_end", roomID, userID, me.getBringGold());
                 }
             }
        });
@@ -395,11 +394,11 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void call(Object... args) {
                 Log.d("BBBBBBBBBBBBBBBB", (String) args[0]);
-                Log.d("BBBBBBBBBBBBBBBB", (String) args[2]);
 
                 for(int i = 0; i < playerList.size(); i++) {
-                    if(playerList.get(i).getUserID() == (String) args[0]) {
-                        int tempI = i;
+                    if(playerList.get(i).getUserID().equals((String) args[0])) {
+                        final int tempI = i;
+
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -434,7 +433,7 @@ public class GameActivity extends AppCompatActivity {
 
         Global.socket.connect();
 
-        Global.socket.emit("join", userID, bringGold);
+        Global.socket.emit("join", userID, initBringGold);
 
     }
 
@@ -723,6 +722,7 @@ public class GameActivity extends AppCompatActivity {
                 else sendGold = Integer.parseInt(etSendGold.getText().toString());
 
                 me.setBringGold(me.getBringGold() - sendGold);
+                tvbringGold.setText(Integer.toString(me.getBringGold()));
 
                 sendMsg = etSendMsg.getText().toString();
 
@@ -754,7 +754,7 @@ public class GameActivity extends AppCompatActivity {
 
         builder.setView(view);
 
-        TextView tvSender = (TextView) view.findViewById(R.id.myGold);
+        TextView tvSender = (TextView) view.findViewById(R.id.sender);
         TextView tvReceiveGold = (TextView) view.findViewById(R.id.receiveGold);
         TextView tvReceiveMsg = (TextView) view.findViewById(R.id.receiveMsg);
 
@@ -763,6 +763,7 @@ public class GameActivity extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
 
+        Log.d("AAAAAAAAAAA", Integer.toString(receiveGold));
 
         tvSender.setText(sender);
         tvReceiveGold.setText(Integer.toString(receiveGold));
@@ -772,6 +773,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 me.setBringGold(me.getBringGold() + receiveGold);
+                tvbringGold.setText(Integer.toString(me.getBringGold()));
                 dialog.dismiss();
             }
         });

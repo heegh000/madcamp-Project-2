@@ -68,7 +68,7 @@
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="20dp"
-                android:text="보낸 금화 :"
+                android:text="받은 금화 :"
                 android:textStyle="bold"
                 android:fontFamily="@font/wild"
                 android:textSize="24sp"/>
