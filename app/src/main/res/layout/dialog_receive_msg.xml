@@ -21,7 +21,7 @@
             android:padding="10dp"
             android:textColor="@color/white"
             android:textSize="24sp"
-            android:text="뒷거래 제안 확인하기"
+            android:text="뒷거래 제안 도착"
             android:fontFamily="@font/wild"
             android:textStyle="bold"/>
         <TextView
@@ -43,7 +43,7 @@
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="20dp"
-                android:text="발신자 :"
+                android:text="보낸 사람 :"
                 android:textStyle="bold"
                 android:fontFamily="@font/wild"
                 android:textSize="24sp"/>

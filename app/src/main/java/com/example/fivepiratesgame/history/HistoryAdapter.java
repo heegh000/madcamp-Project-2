@@ -42,7 +42,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         holder.ivHisProfile.setImageResource(mapAvatar.get(hisData.getAvatar()));
         holder.tvDate.setText(hisData.getTime());
         if(Integer.parseInt(hisData.getResult()) == 100000){
-            holder.tvResult.setText("-DEAD-"); //사망 띄우기!
+            holder.tvResult.setText("DEAD"); //사망 띄우기!
         }
         else {
             holder.tvResult.setText(hisData.getResult());

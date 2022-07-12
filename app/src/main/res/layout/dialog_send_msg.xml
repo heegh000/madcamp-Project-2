@@ -110,39 +110,18 @@
         </LinearLayout>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/sendBtn"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/smCancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="취소하기"
-                android:textColor="@color/white"
-                android:fontFamily="@font/wild"
-                android:textSize="24sp"
-                android:background="@drawable/gd_confirm"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginRight="50dp"
-                android:layout_gravity="center"/>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/smConfirm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="보내기"
-                android:textColor="@color/white"
-                android:fontFamily="@font/wild"
-                android:textSize="24sp"
-                android:background="@drawable/gd_confirm"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_gravity="center"/>
-
-        </LinearLayout>
+            android:text="보내기"
+            android:textColor="@color/white"
+            android:fontFamily="@font/wild"
+            android:textSize="24sp"
+            android:background="@drawable/gd_confirm"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center"/>
 
 
 
