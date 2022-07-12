@@ -191,12 +191,12 @@ public class GameActivity extends AppCompatActivity {
         Global.socket.on("disconnect_req", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                Global.socket.off("disconnect_req");
-                Global.socket.off("game_end");
-                Global.socket.off("dead");
-                Global.socket.off("join");
-                Global.socket.disconnect();
-                finish();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showEndDialog();
+                    }
+                });
             }
         });
 
@@ -398,12 +398,6 @@ public class GameActivity extends AppCompatActivity {
                 Global.socket.off("game_end");
                 Global.socket.emit("disconnect_req", roomID, userID);
                 // 종료 화면?
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showEndDialog();
-                    }
-                });
             }
         });
 
@@ -861,7 +855,13 @@ public class GameActivity extends AppCompatActivity {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Global.socket.off("disconnect_req");
+                Global.socket.off("game_end");
+                Global.socket.off("dead");
+                Global.socket.off("join");
+                Global.socket.disconnect();
                 dialog.dismiss();
+                finish();
             }
         });
 
