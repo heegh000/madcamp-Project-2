@@ -145,7 +145,7 @@ app.post('/google', async(req, res) => {
 
 
 app.get('/history', async(req, res) => {
-  let sql = `SELECT DATE_FORMAT(time, '%y-%m-%d') AS time, result FROM (SELECT time, result FROM history WHERE user_id=? ORDER BY time DESC) AS a;`;
+  let sql = `SELECT DATE_FORMAT(time, '%y-%m-%d') AS time, result FROM (SELECT time, result FROM history WHERE user_id=? ORDER BY time DESC) AS a LIMIT 20;`;
   let param = [req.query.user_id];
 
 
