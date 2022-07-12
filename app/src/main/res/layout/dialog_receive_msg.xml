@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/sendDialog"
+    android:id="@+id/receiveDialog"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -8,7 +8,7 @@
     android:padding="20dp">
 
     <LinearLayout
-        android:id="@+id/sendMsgLL"
+        android:id="@+id/receiveMsgLL"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/gd_bg"
@@ -21,7 +21,7 @@
             android:padding="10dp"
             android:textColor="@color/white"
             android:textSize="24sp"
-            android:text="뒷거래 제안"
+            android:text="뒷거래 제안 확인하기"
             android:fontFamily="@font/wild"
             android:textStyle="bold"/>
         <TextView
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:paddingHorizontal="20dp"
-            android:text="뒷돈을 주어 판을 흔들어 보세요."
+            android:text="누군가로부터 은밀한 거래 제안이 도착했습니다."
             android:textStyle="bold"
             android:fontFamily="@font/wild"
             android:textSize="24sp"/>
@@ -43,12 +43,12 @@
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="20dp"
-                android:text="가져온 금화 :"
+                android:text="발신자 :"
                 android:textStyle="bold"
                 android:fontFamily="@font/wild"
                 android:textSize="24sp"/>
             <TextView
-                android:id="@+id/myGold"
+                android:id="@+id/sender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="20dp"
@@ -68,12 +68,12 @@
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="20dp"
-                android:text="보낼 금화 :"
+                android:text="보낸 금화 :"
                 android:textStyle="bold"
                 android:fontFamily="@font/wild"
                 android:textSize="24sp"/>
-            <EditText
-                android:id="@+id/sendGold"
+            <TextView
+                android:id="@+id/receiveGold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="20dp"
@@ -97,8 +97,8 @@
                 android:textStyle="bold"
                 android:fontFamily="@font/wild"
                 android:textSize="24sp"/>
-            <EditText
-                android:id="@+id/sendMsg"
+            <TextView
+                android:id="@+id/receiveMsg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="20dp"
@@ -114,25 +114,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/smCancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="취소하기"
-                android:textColor="@color/white"
-                android:fontFamily="@font/wild"
-                android:textSize="24sp"
-                android:background="@drawable/gd_confirm"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginRight="50dp"
-                android:layout_gravity="center"/>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/smConfirm"
+                android:id="@+id/rmConfirm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="보내기"
+                android:text="받기"
                 android:textColor="@color/white"
                 android:fontFamily="@font/wild"
                 android:textSize="24sp"

@@ -3,14 +3,18 @@ package com.example.fivepiratesgame.game;
 import static com.example.fivepiratesgame.MainActivity.mapAvatar;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fivepiratesgame.Global;
@@ -60,12 +64,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
 
                 }
                 else {
-                    int bringGold =0 ;
-                    String msg = "";
-
-                    //받아야함
-
-                    Global.socket.emit("msg", GameActivity.gameActivity.me.getRoomId(), holder.getHolderUID(), bringGold, msg);
+                    GameActivity.gameActivity.showSendDialog(holder);
                 }
             }
         });

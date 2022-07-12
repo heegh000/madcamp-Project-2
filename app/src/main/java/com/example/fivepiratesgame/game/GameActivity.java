@@ -189,7 +189,9 @@ public class GameActivity extends AppCompatActivity {
         Global.socket.on("disconnect_req", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                //모든 이벤트 off해야함
+                Global.socket.off("disconnect_req");
+                Global.socket.off("game_end");
+                Global.socket.off("dead");
                 Global.socket.off("join");
                 Global.socket.disconnect();
                 finish();
@@ -322,6 +324,8 @@ public class GameActivity extends AppCompatActivity {
         Global.socket.on("offer_accept", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
+                Global.socket.off("offer_accept");
+                Global.socket.off("dead");
                 if(me.getState() == 1) {
                     Global.socket.emit("game_end", roomID, userID, bringGold);
                 }
@@ -331,6 +335,8 @@ public class GameActivity extends AppCompatActivity {
         Global.socket.on("dead", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
+                Global.socket.off("offer_accept");
+                Global.socket.off("dead");
                 if(me.getState() == 1) {
                     me.setState(0);
                     Global.socket.emit("dead", roomID, userID);
@@ -348,8 +354,11 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
 
-                me.setVote(-1);
+                if(me.getState() == 0) {
+                    voteLayout.setVisibility(View.INVISIBLE);
+                }
 
+                me.setVote(-1);
                 accept.setBackgroundResource(R.drawable.game_textbox);
                 reject.setBackgroundResource(R.drawable.game_textbox);
 
@@ -368,6 +377,7 @@ public class GameActivity extends AppCompatActivity {
         Global.socket.on("game_end", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
+                Global.socket.off("game_end");
                 Global.socket.emit("disconnect_req", roomID, userID);
                 // 종료 화면?
             }
@@ -376,6 +386,21 @@ public class GameActivity extends AppCompatActivity {
         Global.socket.on("msg", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
+                Log.d("BBBBBBBBBBBBBBBB", (String) args[0]);
+                Log.d("BBBBBBBBBBBBBBBB", (String) args[2]);
+
+                for(int i = 0; i < playerList.size(); i++) {
+                    if(playerList.get(i).getUserID() == (String) args[0]) {
+                        int tempI = i;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showReceiveDialog(playerList.get(tempI).getNickname(), (int) args[1], (String) args[2]);
+                            }
+                        });
+                        break;
+                    }
+                }
 
             }
         });
@@ -383,9 +408,7 @@ public class GameActivity extends AppCompatActivity {
         Global.socket.on("dilemma", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                Log.d("BBBBBBBBBB", Integer.toString(me.getState()));
                 if(me.getState() == 1 && me.getOrder() != 3) {
-                    Log.d("AAAAAAAAAAAAA", "AAAAAAAAAAA");
                     me.setVote(-1);
                     runOnUiThread(new Runnable() {
                         @Override
@@ -594,4 +617,106 @@ public class GameActivity extends AppCompatActivity {
             dialog.show();
         }
     }
+    public void showSendDialog(PlayerAdapter.PlayerViewHolder holder) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
+
+        View view = LayoutInflater.from(GameActivity.this).inflate(
+                R.layout.dialog_send_msg, (LinearLayout)findViewById(R.id.sendDialog));
+
+
+        builder.setView(view);
+
+        TextView myGold = (TextView) view.findViewById(R.id.myGold);
+        EditText etSendGold = (EditText) view.findViewById(R.id.sendGold);
+        EditText etSendMsg = (EditText) view.findViewById(R.id.sendMsg);
+        AppCompatButton btnCancel = (AppCompatButton) view.findViewById(R.id.smCancel);
+        AppCompatButton btnConfirm = (AppCompatButton) view.findViewById(R.id.smConfirm);
+
+
+        AlertDialog dialog = builder.create();
+
+
+        myGold.setText(Integer.toString(me.getBringGold()));
+
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int sendGold;
+                String sendMsg;
+
+                if(TextUtils.isEmpty(etSendGold.getText())) { sendGold = 0; }
+                else sendGold = Integer.parseInt(etSendGold.getText().toString());
+
+                me.setBringGold(me.getBringGold() - sendGold);
+
+                sendMsg = etSendMsg.getText().toString();
+
+                Global.socket.emit("msg", me.getRoomId(), me.getUserID(), holder.getHolderUID(), sendGold, sendMsg);
+
+                dialog.dismiss();
+
+            }
+        });
+
+        if(dialog.getWindow() != null){
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        if (!GameActivity.this.isFinishing()) {
+            dialog.show();
+        }
+    }
+
+    public void showReceiveDialog(String sender, int receiveGold, String receiveMsg) {
+
+        Log.d("AAAAAAAAAA", "AAAAAAAAAAAAA");
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
+
+        View view = LayoutInflater.from(GameActivity.this).inflate(
+                R.layout.dialog_receive_msg, (LinearLayout)findViewById(R.id.receiveDialog));
+
+
+        builder.setView(view);
+
+        TextView tvSender = (TextView) view.findViewById(R.id.myGold);
+        TextView tvReceiveGold = (TextView) view.findViewById(R.id.receiveGold);
+        TextView tvReceiveMsg = (TextView) view.findViewById(R.id.receiveMsg);
+
+        AppCompatButton btnConfirm = (AppCompatButton) view.findViewById(R.id.rmConfirm);
+
+
+        AlertDialog dialog = builder.create();
+
+
+        tvSender.setText(sender);
+        tvReceiveGold.setText(Integer.toString(receiveGold));
+        tvReceiveMsg.setText(receiveMsg);
+
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                me.setBringGold(me.getBringGold() + receiveGold);
+                dialog.dismiss();
+            }
+        });
+
+        if(dialog.getWindow() != null){
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        if (!GameActivity.this.isFinishing()) {
+            dialog.show();
+        }
+    }
+
+
 }

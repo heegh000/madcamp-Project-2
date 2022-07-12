@@ -7,14 +7,23 @@
         <deviceKey>
           <Key>
             <type value="SERIAL_NUMBER" />
-            <value value="R39M2097TQR" />
+            <value value="R5CT21J8VHW" />
           </Key>
         </deviceKey>
       </Target>
     </runningDeviceTargetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-07-11T16:44:47.083519600Z" />
+    <timeTargetWasSelectedWithDropDown value="2022-07-12T01:15:57.417536500Z" />
     <multipleDevicesSelectedInDropDown value="true" />
     <runningDeviceTargetsSelectedWithDialog>
+      <Target>
+        <type value="RUNNING_DEVICE_TARGET" />
+        <deviceKey>
+          <Key>
+            <type value="SERIAL_NUMBER" />
+            <value value="ce12160c7003152005" />
+          </Key>
+        </deviceKey>
+      </Target>
       <Target>
         <type value="RUNNING_DEVICE_TARGET" />
         <deviceKey>
@@ -29,7 +38,7 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\bless\.android\avd\Pixel_2_API_30_6.avd" />
+            <value value="C:\Users\hgh\.android\avd\Nexus_6_API_30.avd" />
           </Key>
         </deviceKey>
       </Target>
